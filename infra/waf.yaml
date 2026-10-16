@@ -1,0 +1,63 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >
+  Surakshit WAF web ACL for CloudFront. Deploy in us-east-1 (CloudFront-scoped ACLs can only live
+  there) and pass the WebAclArn output to the primary stack.
+
+  The rate limits are deliberately loose for Nepali IP addresses. NTC and Ncell put mobile
+  subscribers behind carrier-grade NAT, so thousands of people share one public IP; a normal
+  per-IP limit would block a whole town in the minutes the service exists for.
+
+Resources:
+  WebAcl:
+    Type: AWS::WAFv2::WebACL
+    Properties:
+      Name: surakshit
+      Scope: CLOUDFRONT
+      DefaultAction: {Allow: {}}
+      VisibilityConfig:
+        SampledRequestsEnabled: false   # sampled requests would store lookup URLs, i.e. phone numbers
+        CloudWatchMetricsEnabled: true
+        MetricName: surakshit
+      Rules:
+        - Name: aws-ip-reputation
+          Priority: 0
+          OverrideAction: {None: {}}
+          Statement:
+            ManagedRuleGroupStatement: {VendorName: AWS, Name: AWSManagedRulesAmazonIpReputationList}
+          VisibilityConfig: {SampledRequestsEnabled: false, CloudWatchMetricsEnabled: true, MetricName: ip-reputation}
+        - Name: aws-known-bad-inputs
+          Priority: 1
+          OverrideAction: {None: {}}
+          Statement:
+            ManagedRuleGroupStatement: {VendorName: AWS, Name: AWSManagedRulesKnownBadInputsRuleSet}
+          VisibilityConfig: {SampledRequestsEnabled: false, CloudWatchMetricsEnabled: true, MetricName: bad-inputs}
+        # Outside Nepal: a lookup script hammering from one IP is not a family.
+        - Name: rate-limit-outside-nepal
+          Priority: 2
+          Action: {Block: {}}
+          Statement:
+            RateBasedStatement:
+              Limit: 1000
+              EvaluationWindowSec: 300
+              AggregateKeyType: IP
+              ScopeDownStatement:
+                NotStatement:
+                  Statement:
+                    GeoMatchStatement: {CountryCodes: [NP]}
+          VisibilityConfig: {SampledRequestsEnabled: false, CloudWatchMetricsEnabled: true, MetricName: rate-abroad}
+        # Inside Nepal: only stops something absurd from a single carrier NAT address.
+        - Name: rate-limit-nepal
+          Priority: 3
+          Action: {Block: {}}
+          Statement:
+            RateBasedStatement:
+              Limit: 200000
+              EvaluationWindowSec: 300
+              AggregateKeyType: IP
+              ScopeDownStatement:
+                GeoMatchStatement: {CountryCodes: [NP]}
+          VisibilityConfig: {SampledRequestsEnabled: false, CloudWatchMetricsEnabled: true, MetricName: rate-nepal}
+
+Outputs:
+  WebAclArn:
+    Value: !GetAtt WebAcl.Arn

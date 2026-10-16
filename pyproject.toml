@@ -1,0 +1,18 @@
+[project]
+name = "surakshit"
+version = "1.0.0"
+description = "Earthquake check-ins for Nepal: tell your family you're safe, even when everyone tries at once"
+requires-python = ">=3.12"
+readme = "README.md"
+license = {text = "MIT"}
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "S"]
+ignore = ["S101"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

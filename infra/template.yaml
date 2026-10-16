@@ -1,0 +1,753 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Surakshit - earthquake check-ins for Nepal. One stack per region: Role=primary in ap-south-1
+  (owns the global tables, CloudFront and the activator) and Role=standby in ap-southeast-1
+  (same API and workers, idle until promoted). See infra/README.md for the deploy order.
+
+Parameters:
+  Role:
+    Type: String
+    AllowedValues: [primary, standby]
+    Default: primary
+  Active:
+    Type: String
+    AllowedValues: ["true", "false"]
+    Default: "true"
+    Description: Whether this region runs the activator and the counters. Exactly one region is active; promoting the standby flips this (docs/RUNBOOK.md).
+  StandbyRegion:
+    Type: String
+    Default: ap-southeast-1
+  CheckInsStreamArn:
+    Type: String
+    Default: arn:aws:dynamodb:ap-southeast-1:000000000000:table/surakshit-checkins/stream/unused-by-primary
+    Description: (standby only) stream ARN of this region's surakshit-checkins replica; the primary stack reads it from the table it creates.
+  PepperParameterName:
+    Type: String
+    Default: /surakshit/phone-pepper
+    Description: SSM SecureString holding the HMAC key for phone numbers. Must hold the SAME value in both regions.
+  AlertEmail:
+    Type: String
+    Description: Email for "watch" events (M5.0-5.4), alarms and the budget.
+  OnCallEmail:
+    Type: String
+    Description: Address that pages the on-call person for "major" events (M5.5+), e.g. a PagerDuty email integration.
+  SmsProvider:
+    Type: String
+    AllowedValues: [dryrun, aggregator, aws]
+    Default: dryrun
+  SmsApiUrl:
+    Type: String
+    Default: ""
+  SmsTokenParameterName:
+    Type: String
+    Default: /surakshit/sms-token
+    Description: SSM SecureString with the aggregator API token (also checked on the inbound webhook).
+  SmsBudgetPerEvent:
+    Type: Number
+    Default: 500000
+    Description: Contact notifications stop after this many SMS in one event (replies continue).
+  WarmWriteUnits:
+    Type: Number
+    Default: 20000
+    Description: DynamoDB warm throughput (writes/s) the CheckIns table is pre-warmed to.
+  MaxWriteUnits:
+    Type: Number
+    Default: 40000
+    Description: Ceiling on CheckIns on-demand writes/s. A cost guardrail; the default account table quota is 40,000.
+  ApiThrottleRate:
+    Type: Number
+    Default: 9000
+    Description: Stage-wide steady-state limit, set just under the account quota (10,000 by default; raise the quota first).
+  StandbyApiDomain:
+    Type: String
+    Default: ""
+    Description: (primary only) execute-api domain of the standby stack's HTTP API, for CloudFront origin failover on reads.
+  WebAclArn:
+    Type: String
+    Default: ""
+    Description: (primary only) WAF web ACL from infra/waf.yaml. CloudFront WAF ACLs must live in us-east-1.
+
+Conditions:
+  IsPrimary: !Equals [!Ref Role, primary]
+  IsActive: !Equals [!Ref Active, "true"]
+  HasStandbyOrigin: !And [!Condition IsPrimary, !Not [!Equals [!Ref StandbyApiDomain, ""]]]
+  HasWaf: !And [!Condition IsPrimary, !Not [!Equals [!Ref WebAclArn, ""]]]
+
+Globals:
+  Function:
+    Runtime: python3.12
+    Architectures: [arm64]
+    CodeUri: ../build/lambda
+    MemorySize: 512
+    Timeout: 30
+    LoggingConfig:
+      LogFormat: Text
+    Environment:
+      Variables:
+        CHECKINS_TABLE: surakshit-checkins
+        META_TABLE: surakshit-meta
+        PEPPER_PARAM: !Ref PepperParameterName
+        NOTIFY_QUEUE_URL: !Ref NotifyQueue
+        ROLE: !Ref Role
+
+Resources:
+  # ---------------------------------------------------------------- data (primary owns the global tables)
+  CheckInsTable:
+    Type: AWS::DynamoDB::GlobalTable
+    Condition: IsPrimary
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      TableName: surakshit-checkins
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - {AttributeName: pk, AttributeType: S}
+        - {AttributeName: sk, AttributeType: S}
+      KeySchema:
+        - {AttributeName: pk, KeyType: HASH}
+        - {AttributeName: sk, KeyType: RANGE}
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
+      TimeToLiveSpecification:
+        AttributeName: expires_at
+        Enabled: true
+      WarmThroughput:
+        WriteUnitsPerSecond: !Ref WarmWriteUnits
+        ReadUnitsPerSecond: 12000
+      WriteOnDemandThroughputSettings:
+        MaxWriteRequestUnits: !Ref MaxWriteUnits
+      Replicas:
+        - Region: !Ref AWS::Region
+          PointInTimeRecoverySpecification: {PointInTimeRecoveryEnabled: true}
+          DeletionProtectionEnabled: true
+          Tags: [{Key: project, Value: surakshit}]
+        - Region: !Ref StandbyRegion
+          PointInTimeRecoverySpecification: {PointInTimeRecoveryEnabled: true}
+          DeletionProtectionEnabled: true
+          Tags: [{Key: project, Value: surakshit}]
+
+  MetaTable:
+    Type: AWS::DynamoDB::GlobalTable
+    Condition: IsPrimary
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      TableName: surakshit-meta
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - {AttributeName: pk, AttributeType: S}
+        - {AttributeName: sk, AttributeType: S}
+      KeySchema:
+        - {AttributeName: pk, KeyType: HASH}
+        - {AttributeName: sk, KeyType: RANGE}
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES   # required on every global table replica
+      Replicas:
+        - Region: !Ref AWS::Region
+          PointInTimeRecoverySpecification: {PointInTimeRecoveryEnabled: true}
+          DeletionProtectionEnabled: true
+        - Region: !Ref StandbyRegion
+          PointInTimeRecoverySpecification: {PointInTimeRecoveryEnabled: true}
+          DeletionProtectionEnabled: true
+
+  # ---------------------------------------------------------------- queues
+  CheckInDLQ:
+    Type: AWS::SQS::Queue
+    Properties:
+      MessageRetentionPeriod: 1209600
+      SqsManagedSseEnabled: true
+
+  CheckInQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      VisibilityTimeout: 180          # 6 x the writer timeout, as Lambda recommends
+      MessageRetentionPeriod: 1209600  # 14 days: a check-in accepted is a check-in kept
+      SqsManagedSseEnabled: true
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt CheckInDLQ.Arn
+        maxReceiveCount: 8
+
+  NotifyDLQ:
+    Type: AWS::SQS::Queue
+    Properties:
+      MessageRetentionPeriod: 1209600
+      SqsManagedSseEnabled: true
+
+  NotifyQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      VisibilityTimeout: 180
+      MessageRetentionPeriod: 345600   # 4 days: after that a "safe" SMS is noise
+      SqsManagedSseEnabled: true
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt NotifyDLQ.Arn
+        maxReceiveCount: 5
+
+  StreamDLQ:
+    Type: AWS::SQS::Queue
+    Properties:
+      MessageRetentionPeriod: 1209600
+      SqsManagedSseEnabled: true
+
+  # ---------------------------------------------------------------- functions
+  WriterFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: surakshit.aws.handlers.writer_handler
+      Description: Check-in queue -> DynamoDB (conditional writes) -> notify queue
+      Policies:
+        - DynamoDBCrudPolicy: {TableName: surakshit-checkins}
+        - DynamoDBReadPolicy: {TableName: surakshit-meta}
+        - SQSSendMessagePolicy: {QueueName: !GetAtt NotifyQueue.QueueName}
+        - SSMParameterReadPolicy: {ParameterName: !Select [1, !Split ["/", !Ref PepperParameterName]]}
+      Events:
+        Queue:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt CheckInQueue.Arn
+            BatchSize: 100
+            MaximumBatchingWindowInSeconds: 1
+            FunctionResponseTypes: [ReportBatchItemFailures]
+            ScalingConfig:
+              MaximumConcurrency: 1000
+
+  AggregatorFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: surakshit.aws.handlers.aggregator_handler
+      Description: CheckIns stream -> per-district counters (runs only in the active region)
+      Policies:
+        - DynamoDBCrudPolicy: {TableName: surakshit-meta}
+        - SQSSendMessagePolicy: {QueueName: !GetAtt StreamDLQ.QueueName}
+        - Statement:
+            - Effect: Allow
+              Action: [dynamodb:DescribeStream, dynamodb:GetRecords, dynamodb:GetShardIterator, dynamodb:ListStreams]
+              Resource: !Sub arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/surakshit-checkins/stream/*
+
+  # Both regions' streams carry every write (a global table replicates into each replica's
+  # stream), so counting in both would double every count. Only the active region's mapping is on.
+  AggregatorStreamMapping:
+    Type: AWS::Lambda::EventSourceMapping
+    Properties:
+      FunctionName: !Ref AggregatorFunction
+      EventSourceArn: !If [IsPrimary, !GetAtt CheckInsTable.StreamArn, !Ref CheckInsStreamArn]
+      Enabled: !If [IsActive, true, false]
+      StartingPosition: LATEST
+      BatchSize: 100
+      MaximumBatchingWindowInSeconds: 2
+      BisectBatchOnFunctionError: true
+      MaximumRetryAttempts: 5
+      FunctionResponseTypes: [ReportBatchItemFailures]
+      DestinationConfig:
+        OnFailure:
+          Destination: !GetAtt StreamDLQ.Arn
+
+  NotifierFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: surakshit.aws.handlers.notifier_handler
+      Description: Notify queue -> SMS, under the provider's rate limit and the per-event budget
+      Environment:
+        Variables:
+          SMS_PROVIDER: !Ref SmsProvider
+          SMS_API_URL: !Ref SmsApiUrl
+          SMS_TOKEN_PARAM: !Ref SmsTokenParameterName
+          SMS_BUDGET_PER_EVENT: !Ref SmsBudgetPerEvent
+      Policies:
+        - DynamoDBCrudPolicy: {TableName: surakshit-meta}
+        - SSMParameterReadPolicy: {ParameterName: !Select [1, !Split ["/", !Ref SmsTokenParameterName]]}
+      Events:
+        Queue:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt NotifyQueue.Arn
+            BatchSize: 10
+            FunctionResponseTypes: [ReportBatchItemFailures]
+            ScalingConfig:
+              MaximumConcurrency: 10   # ~10 x 10 messages in flight: under a typical aggregator's TPS limit
+
+  ActivatorFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: surakshit.aws.handlers.activator_handler
+      Description: Every minute - USGS feed -> open events -> page or email
+      MemorySize: 256
+      Timeout: 20
+      ReservedConcurrentExecutions: 1   # two overlapping runs would race to open the same event
+      Environment:
+        Variables:
+          PAGE_TOPIC_ARN: !Ref PageTopic
+          EMAIL_TOPIC_ARN: !Ref EmailTopic
+      Policies:
+        - DynamoDBCrudPolicy: {TableName: surakshit-meta}
+        - SNSPublishMessagePolicy: {TopicName: !GetAtt PageTopic.TopicName}
+        - SNSPublishMessagePolicy: {TopicName: !GetAtt EmailTopic.TopicName}
+      Events:
+        EveryMinute:
+          Type: ScheduleV2
+          Properties:
+            ScheduleExpression: rate(1 minute)
+            State: !If [IsActive, ENABLED, DISABLED]
+            RetryPolicy:
+              MaximumRetryAttempts: 0   # the next run is a minute away; a retry would only overlap it
+
+  ApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: surakshit.aws.handlers.api_handler
+      Description: GET /status, /events, /summary/{event_id}, /health
+      MemorySize: 256
+      Timeout: 5
+      Policies:
+        - DynamoDBReadPolicy: {TableName: surakshit-checkins}
+        - DynamoDBReadPolicy: {TableName: surakshit-meta}
+        - SSMParameterReadPolicy: {ParameterName: !Select [1, !Split ["/", !Ref PepperParameterName]]}
+
+  SmsAuthorizerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: surakshit.aws.authorizer.handler
+      Description: Checks the aggregator's shared token on POST /sms/inbound
+      MemorySize: 128
+      Timeout: 3
+      Environment:
+        Variables:
+          SMS_TOKEN_PARAM: !Ref SmsTokenParameterName
+      Policies:
+        - SSMParameterReadPolicy: {ParameterName: !Select [1, !Split ["/", !Ref SmsTokenParameterName]]}
+
+  # ---------------------------------------------------------------- HTTP API
+  HttpApi:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name: !Sub surakshit-${Role}
+      ProtocolType: HTTP
+      CorsConfiguration:
+        AllowOrigins: ["*"]
+        AllowMethods: [GET, POST]
+        AllowHeaders: [content-type]
+
+  ApiStage:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      ApiId: !Ref HttpApi
+      StageName: $default
+      AutoDeploy: true
+      DefaultRouteSettings:
+        ThrottlingRateLimit: !Ref ApiThrottleRate
+        ThrottlingBurstLimit: 5000
+      AccessLogSettings:
+        DestinationArn: !GetAtt ApiAccessLogs.Arn
+        # routeKey, never path or query string: the lookup URL contains a phone number.
+        Format: '{"requestId":"$context.requestId","time":"$context.requestTimeEpoch","route":"$context.routeKey","status":"$context.status","latency":"$context.responseLatency","integrationError":"$context.integrationErrorMessage"}'
+
+  ApiAccessLogs:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      RetentionInDays: 14
+
+  ApiToSqsRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal: {Service: apigateway.amazonaws.com}
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: send-checkins
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: sqs:SendMessage
+                Resource: !GetAtt CheckInQueue.Arn
+
+  # POST /checkin: API Gateway -> SQS directly. No Lambda between the person and "accepted".
+  CheckInIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref HttpApi
+      IntegrationType: AWS_PROXY
+      IntegrationSubtype: SQS-SendMessage
+      PayloadFormatVersion: "1.0"
+      CredentialsArn: !GetAtt ApiToSqsRole.Arn
+      RequestParameters:
+        QueueUrl: !Ref CheckInQueue
+        MessageBody: $request.body
+        MessageAttributes: >-
+          {"source":{"DataType":"String","StringValue":"web"},
+           "requestId":{"DataType":"String","StringValue":"${context.requestId}"},
+           "requestTime":{"DataType":"Number","StringValue":"${context.requestTimeEpoch}"}}
+
+  CheckInRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref HttpApi
+      RouteKey: POST /checkin
+      Target: !Sub integrations/${CheckInIntegration}
+
+  SmsInboundIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref HttpApi
+      IntegrationType: AWS_PROXY
+      IntegrationSubtype: SQS-SendMessage
+      PayloadFormatVersion: "1.0"
+      CredentialsArn: !GetAtt ApiToSqsRole.Arn
+      RequestParameters:
+        QueueUrl: !Ref CheckInQueue
+        MessageBody: $request.body
+        MessageAttributes: >-
+          {"source":{"DataType":"String","StringValue":"sms"},
+           "requestId":{"DataType":"String","StringValue":"${context.requestId}"},
+           "requestTime":{"DataType":"Number","StringValue":"${context.requestTimeEpoch}"}}
+
+  SmsAuthorizer:
+    Type: AWS::ApiGatewayV2::Authorizer
+    Properties:
+      ApiId: !Ref HttpApi
+      Name: sms-token
+      AuthorizerType: REQUEST
+      AuthorizerPayloadFormatVersion: "2.0"
+      EnableSimpleResponses: true
+      IdentitySource: [$request.header.x-surakshit-token]
+      AuthorizerResultTtlInSeconds: 300   # one authorizer call per 5 minutes, not per SMS
+      AuthorizerUri: !Sub arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${SmsAuthorizerFunction.Arn}/invocations
+
+  SmsInboundRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref HttpApi
+      RouteKey: POST /sms/inbound
+      AuthorizationType: CUSTOM
+      AuthorizerId: !Ref SmsAuthorizer
+      Target: !Sub integrations/${SmsInboundIntegration}
+
+  ReadIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref HttpApi
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !GetAtt ApiFunction.Arn
+      PayloadFormatVersion: "2.0"
+
+  StatusRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties: {ApiId: !Ref HttpApi, RouteKey: GET /status, Target: !Sub "integrations/${ReadIntegration}"}
+  EventsRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties: {ApiId: !Ref HttpApi, RouteKey: GET /events, Target: !Sub "integrations/${ReadIntegration}"}
+  SummaryRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties: {ApiId: !Ref HttpApi, RouteKey: "GET /summary/{event_id}", Target: !Sub "integrations/${ReadIntegration}"}
+  HealthRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties: {ApiId: !Ref HttpApi, RouteKey: GET /health, Target: !Sub "integrations/${ReadIntegration}"}
+
+  ApiInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref ApiFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${HttpApi}/*
+
+  AuthorizerInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref SmsAuthorizerFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${HttpApi}/authorizers/${SmsAuthorizer}
+
+  # ---------------------------------------------------------------- static site + CDN (primary only)
+  SiteBucket:
+    Type: AWS::S3::Bucket
+    Condition: IsPrimary
+    Properties:
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault: {SSEAlgorithm: AES256}
+      VersioningConfiguration: {Status: Enabled}
+
+  SiteBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Condition: IsPrimary
+    Properties:
+      Bucket: !Ref SiteBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal: {Service: cloudfront.amazonaws.com}
+            Action: s3:GetObject
+            Resource: !Sub ${SiteBucket.Arn}/*
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub arn:${AWS::Partition}:cloudfront::${AWS::AccountId}:distribution/${Cdn}
+
+  SiteOac:
+    Type: AWS::CloudFront::OriginAccessControl
+    Condition: IsPrimary
+    Properties:
+      OriginAccessControlConfig:
+        Name: !Sub surakshit-site-${AWS::StackName}
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+  # Caches GET responses for as long as the API's Cache-Control says (30-60 s), keyed on the
+  # `phone` query string so each lookup is its own cache entry.
+  ReadCachePolicy:
+    Type: AWS::CloudFront::CachePolicy
+    Condition: IsPrimary
+    Properties:
+      CachePolicyConfig:
+        Name: !Sub surakshit-reads-${AWS::StackName}
+        MinTTL: 0
+        DefaultTTL: 30
+        MaxTTL: 60
+        ParametersInCacheKeyAndForwardedToOrigin:
+          EnableAcceptEncodingGzip: true
+          HeadersConfig: {HeaderBehavior: none}
+          CookiesConfig: {CookieBehavior: none}
+          QueryStringsConfig:
+            QueryStringBehavior: whitelist
+            QueryStrings: [phone]
+
+  Cdn:
+    Type: AWS::CloudFront::Distribution
+    Condition: IsPrimary
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Comment: Surakshit
+        HttpVersion: http2and3
+        PriceClass: PriceClass_200      # includes India edge locations, the closest to Nepal
+        DefaultRootObject: index.html
+        WebACLId: !If [HasWaf, !Ref WebAclArn, !Ref AWS::NoValue]
+        Origins:
+          - Id: site
+            DomainName: !GetAtt SiteBucket.RegionalDomainName
+            OriginAccessControlId: !GetAtt SiteOac.Id
+            S3OriginConfig: {OriginAccessIdentity: ""}
+          - Id: api-primary
+            DomainName: !Sub ${HttpApi}.execute-api.${AWS::Region}.amazonaws.com
+            CustomOriginConfig: {OriginProtocolPolicy: https-only, OriginSSLProtocols: [TLSv1.2]}
+          - !If
+            - HasStandbyOrigin
+            - Id: api-standby
+              DomainName: !Ref StandbyApiDomain
+              CustomOriginConfig: {OriginProtocolPolicy: https-only, OriginSSLProtocols: [TLSv1.2]}
+            - !Ref AWS::NoValue
+        OriginGroups: !If
+          - HasStandbyOrigin
+          - Quantity: 1
+            Items:
+              - Id: api-reads
+                FailoverCriteria:
+                  StatusCodes: {Quantity: 4, Items: [500, 502, 503, 504]}
+                Members:
+                  Quantity: 2
+                  Items: [{OriginId: api-primary}, {OriginId: api-standby}]
+          - !Ref AWS::NoValue
+        DefaultCacheBehavior:
+          TargetOriginId: site
+          ViewerProtocolPolicy: redirect-to-https
+          Compress: true
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6   # Managed-CachingOptimized
+        CacheBehaviors:
+          # Writes cannot use an origin group (CloudFront fails over GET/HEAD/OPTIONS only), so
+          # POST goes to the active region; failover for writes is the promote runbook.
+          - PathPattern: /checkin
+            TargetOriginId: api-primary
+            ViewerProtocolPolicy: https-only
+            AllowedMethods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
+            CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad   # Managed-CachingDisabled
+            OriginRequestPolicyId: b689b0a8-53d0-40ab-baf2-68738e2966ac  # Managed-AllViewerExceptHostHeader
+          - PathPattern: /status*
+            TargetOriginId: !If [HasStandbyOrigin, api-reads, api-primary]
+            ViewerProtocolPolicy: https-only
+            Compress: true
+            CachePolicyId: !Ref ReadCachePolicy
+          - PathPattern: /events*
+            TargetOriginId: !If [HasStandbyOrigin, api-reads, api-primary]
+            ViewerProtocolPolicy: https-only
+            Compress: true
+            CachePolicyId: !Ref ReadCachePolicy
+          - PathPattern: /summary/*
+            TargetOriginId: !If [HasStandbyOrigin, api-reads, api-primary]
+            ViewerProtocolPolicy: https-only
+            Compress: true
+            CachePolicyId: !Ref ReadCachePolicy
+
+  # ---------------------------------------------------------------- notifications and alarms
+  PageTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      KmsMasterKeyId: alias/aws/sns
+      Subscription: [{Protocol: email, Endpoint: !Ref OnCallEmail}]
+
+  EmailTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      KmsMasterKeyId: alias/aws/sns
+      Subscription: [{Protocol: email, Endpoint: !Ref AlertEmail}]
+
+  CheckInsBacklogAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: Oldest check-in waiting > 5 min. Accepted but not yet visible to families.
+      Namespace: AWS/SQS
+      MetricName: ApproximateAgeOfOldestMessage
+      Dimensions: [{Name: QueueName, Value: !GetAtt CheckInQueue.QueueName}]
+      Statistic: Maximum
+      Period: 60
+      EvaluationPeriods: 3
+      Threshold: 300
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+      AlarmActions: [!Ref PageTopic]
+
+  CheckInDLQAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: A check-in failed 8 times and is parked in the DLQ.
+      Namespace: AWS/SQS
+      MetricName: ApproximateNumberOfMessagesVisible
+      Dimensions: [{Name: QueueName, Value: !GetAtt CheckInDLQ.QueueName}]
+      Statistic: Maximum
+      Period: 60
+      EvaluationPeriods: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+      AlarmActions: [!Ref PageTopic]
+
+  NotifyDLQAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: SMS notifications are failing permanently.
+      Namespace: AWS/SQS
+      MetricName: ApproximateNumberOfMessagesVisible
+      Dimensions: [{Name: QueueName, Value: !GetAtt NotifyDLQ.QueueName}]
+      Statistic: Maximum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+      AlarmActions: [!Ref EmailTopic]
+
+  StreamDLQAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: Counter updates were dropped; summary counts are now low.
+      Namespace: AWS/SQS
+      MetricName: ApproximateNumberOfMessagesVisible
+      Dimensions: [{Name: QueueName, Value: !GetAtt StreamDLQ.QueueName}]
+      Statistic: Maximum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+      AlarmActions: [!Ref EmailTopic]
+
+  ActivatorNotRunningAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Condition: IsActive
+    Properties:
+      AlarmDescription: The USGS activator has not run for 10 minutes. A disabled schedule errors nothing.
+      Namespace: AWS/Lambda
+      MetricName: Invocations
+      Dimensions: [{Name: FunctionName, Value: !Ref ActivatorFunction}]
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 2
+      Threshold: 1
+      ComparisonOperator: LessThanThreshold
+      TreatMissingData: breaching
+      AlarmActions: [!Ref PageTopic]
+
+  ActivatorFailingAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Condition: IsActive
+    Properties:
+      AlarmDescription: USGS feed unreachable or unparseable for 15 minutes. Events must be opened by hand.
+      Namespace: AWS/Lambda
+      MetricName: Errors
+      Dimensions: [{Name: FunctionName, Value: !Ref ActivatorFunction}]
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 3
+      Threshold: 4
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: notBreaching
+      AlarmActions: [!Ref EmailTopic]
+
+  WriteThrottleAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Condition: IsPrimary
+    Properties:
+      AlarmDescription: CheckIns writes are being throttled. The queue absorbs it; watch the backlog alarm.
+      Namespace: AWS/DynamoDB
+      MetricName: WriteThrottleEvents
+      Dimensions: [{Name: TableName, Value: surakshit-checkins}]
+      Statistic: Sum
+      Period: 60
+      EvaluationPeriods: 3
+      Threshold: 100
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+      AlarmActions: [!Ref EmailTopic]
+
+  SmsBudgetAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: The SMS budget breaker is skipping contact notifications.
+      Namespace: Surakshit
+      MetricName: SmsSkippedBudget
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+      AlarmActions: [!Ref PageTopic]
+
+  MonthlyBudget:
+    Type: AWS::Budgets::Budget
+    Condition: IsPrimary
+    Properties:
+      Budget:
+        BudgetName: surakshit-monthly
+        BudgetType: COST
+        TimeUnit: MONTHLY
+        BudgetLimit: {Amount: 30, Unit: USD}
+      NotificationsWithSubscribers:
+        - Notification: {NotificationType: ACTUAL, ComparisonOperator: GREATER_THAN, Threshold: 80}
+          Subscribers: [{SubscriptionType: EMAIL, Address: !Ref AlertEmail}]
+        - Notification: {NotificationType: FORECASTED, ComparisonOperator: GREATER_THAN, Threshold: 100}
+          Subscribers: [{SubscriptionType: EMAIL, Address: !Ref AlertEmail}]
+
+Outputs:
+  ApiDomain:
+    Description: Pass this to the primary stack as StandbyApiDomain (when deploying the standby).
+    Value: !Sub ${HttpApi}.execute-api.${AWS::Region}.amazonaws.com
+  SiteUrl:
+    Condition: IsPrimary
+    Value: !Sub https://${Cdn.DomainName}
+  SiteBucketName:
+    Condition: IsPrimary
+    Value: !Ref SiteBucket
+  CheckInQueueUrl:
+    Value: !Ref CheckInQueue

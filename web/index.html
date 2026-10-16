@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="ne">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>सुरक्षित · Surakshit</title>
+<meta name="description" content="Tell your family you are safe after an earthquake in Nepal.">
+<style>
+  /* One file, no fonts, no frameworks: it has to load on a congested 2G connection. */
+  :root { --fg:#1b1b1b; --muted:#5b5b5b; --line:#d6d6d6; --bg:#fff; --safe:#1e7b34; --help:#b3261e; --hurt:#b35c00; --accent:#1f6f8b; }
+  * { box-sizing: border-box; }
+  body { margin:0; font:16px/1.45 system-ui, sans-serif; color:var(--fg); background:var(--bg); }
+  main { max-width:30rem; margin:0 auto; padding:1rem; }
+  h1 { font-size:1.4rem; margin:.2rem 0; } h2 { font-size:1.05rem; margin:1.4rem 0 .4rem; }
+  p.small, .small { color:var(--muted); font-size:.85rem; }
+  label { display:block; margin:.7rem 0 .2rem; font-weight:600; }
+  input, select, textarea { width:100%; padding:.6rem; font:inherit; border:1px solid var(--line); border-radius:6px; }
+  .status { display:grid; grid-template-columns:1fr 1fr 1fr; gap:.4rem; }
+  .status button { padding:.9rem .2rem; font:inherit; font-weight:700; border-radius:8px; border:2px solid var(--line); background:#fff; }
+  .status button[aria-pressed=true] { color:#fff; border-color:transparent; }
+  #s-safe[aria-pressed=true] { background:var(--safe); } #s-need_help[aria-pressed=true] { background:var(--help); }
+  #s-injured[aria-pressed=true] { background:var(--hurt); }
+  button.go { width:100%; margin-top:1rem; padding:.9rem; font:inherit; font-weight:700; color:#fff; background:var(--accent); border:0; border-radius:8px; }
+  #banner { padding:.6rem .8rem; border-radius:6px; background:#fff4e5; border:1px solid #f0c27b; display:none; }
+  #out, #found { margin-top:.8rem; padding:.7rem; border-radius:6px; background:#f4f6f8; display:none; }
+  .lang { float:right; background:none; border:1px solid var(--line); border-radius:6px; padding:.2rem .5rem; font:inherit; }
+  details { margin-top:.5rem; }
+</style>
+</head>
+<body>
+<main>
+  <button class="lang" id="lang" type="button">English</button>
+  <h1 data-ne="सुरक्षित" data-en="Surakshit">सुरक्षित</h1>
+  <p class="small" data-ne="भूकम्पपछि परिवारलाई आफू ठीक भएको खबर दिनुहोस्। इन्टरनेट नभए SMS: THIK वा SAHAYOG।"
+     data-en="Tell your family you are OK after an earthquake. No internet? SMS: SAFE or HELP.">भूकम्पपछि परिवारलाई आफू ठीक भएको खबर दिनुहोस्। इन्टरनेट नभए SMS: THIK वा SAHAYOG।</p>
+  <div id="banner"></div>
+
+  <form id="checkin">
+    <label for="phone" data-ne="तपाईंको मोबाइल नम्बर" data-en="Your mobile number">तपाईंको मोबाइल नम्बर</label>
+    <input id="phone" inputmode="tel" autocomplete="tel" placeholder="98XXXXXXXX" required>
+    <label data-ne="तपाईं कस्तो हुनुहुन्छ?" data-en="How are you?">तपाईं कस्तो हुनुहुन्छ?</label>
+    <div class="status">
+      <button type="button" id="s-safe" data-v="safe" data-ne="सुरक्षित" data-en="Safe">सुरक्षित</button>
+      <button type="button" id="s-need_help" data-v="need_help" data-ne="सहयोग चाहियो" data-en="Need help">सहयोग चाहियो</button>
+      <button type="button" id="s-injured" data-v="injured" data-ne="घाइते" data-en="Injured">घाइते</button>
+    </div>
+    <details>
+      <summary data-ne="जिल्ला, सन्देश, परिवारका नम्बर (ऐच्छिक)" data-en="District, note, family numbers (optional)">जिल्ला, सन्देश, परिवारका नम्बर (ऐच्छिक)</summary>
+      <label for="district" data-ne="जिल्ला" data-en="District">जिल्ला</label>
+      <input id="district" list="districts" autocomplete="off">
+      <datalist id="districts"></datalist>
+      <label for="note" data-ne="छोटो सन्देश" data-en="Short note">छोटो सन्देश</label>
+      <textarea id="note" maxlength="140" rows="2"></textarea>
+      <label for="contacts" data-ne="SMS पठाउने परिवारका नम्बर (३ सम्म, अल्पविरामले छुट्याउनुहोस्)" data-en="Family numbers to text (up to 3, comma separated)">SMS पठाउने परिवारका नम्बर (३ सम्म, अल्पविरामले छुट्याउनुहोस्)</label>
+      <input id="contacts" inputmode="tel">
+    </details>
+    <button class="go" type="submit" data-ne="पठाउनुहोस्" data-en="Send">पठाउनुहोस्</button>
+  </form>
+  <div id="out" role="status"></div>
+
+  <h2 data-ne="परिवारको खोजी" data-en="Look someone up">परिवारको खोजी</h2>
+  <form id="lookup">
+    <input id="who" inputmode="tel" placeholder="98XXXXXXXX" required>
+    <button class="go" type="submit" data-ne="खोज्नुहोस्" data-en="Find">खोज्नुहोस्</button>
+  </form>
+  <div id="found" role="status"></div>
+  <p class="small" data-ne="नम्बर भण्डारण हुँदैन। जानकारी १८० दिनपछि मेटिन्छ।" data-en="Phone numbers are not stored. Check-ins are deleted after 180 days.">नम्बर भण्डारण हुँदैन। जानकारी १८० दिनपछि मेटिन्छ।</p>
+</main>
+<script>
+"use strict";
+// Offline-first: a check-in is saved on the phone first and sent in the background, retrying with
+// exponential backoff and full jitter (capped at 5 minutes) until the server says 202. Closing the
+// page does not lose it; the next visit resumes. See docs/ARCHITECTURE.md, "The client is part of
+// the architecture".
+var lang = "ne", status = null, OUTBOX = "surakshit-outbox";
+var T = {
+  ne: { saved: "फोनमा सुरक्षित गरियो, पठाउँदै…", sent: "पठाइयो। परिवारले तपाईंको नम्बरले खोज्न सक्छन्।", retry: "सञ्जाल व्यस्त छ, फेरि प्रयास हुँदैछ…",
+        pick: "कृपया अवस्था छान्नुहोस्।", none: "अहिलेसम्म कुनै जानकारी छैन। यसको अर्थ खतरा होइन: सञ्जाल बन्द हुन सक्छ।",
+        st: { safe: "सुरक्षित", need_help: "सहयोग चाहिएको", injured: "घाइते" }, ev: "भूकम्प: " },
+  en: { saved: "Saved on your phone, sending…", sent: "Sent. Family can look you up by your number.", retry: "Network busy, retrying…",
+        pick: "Please choose how you are.", none: "No check-in yet. That is not bad news: networks may be down.",
+        st: { safe: "SAFE", need_help: "NEEDS HELP", injured: "INJURED" }, ev: "Earthquake: " }
+};
+var DISTRICTS = ["Achham","Arghakhanchi","Baglung","Baitadi","Bajhang","Bajura","Banke","Bara","Bardiya","Bhaktapur","Bhojpur","Chitwan","Dadeldhura","Dailekh","Dang","Darchula","Dhading","Dhankuta","Dhanusha","Dolakha","Dolpa","Doti","Eastern Rukum","Gorkha","Gulmi","Humla","Ilam","Jajarkot","Jhapa","Jumla","Kailali","Kalikot","Kanchanpur","Kapilvastu","Kaski","Kathmandu","Kavrepalanchok","Khotang","Lalitpur","Lamjung","Mahottari","Makwanpur","Manang","Morang","Mugu","Mustang","Myagdi","Nawalparasi East","Nawalparasi West","Nuwakot","Okhaldhunga","Palpa","Panchthar","Parbat","Parsa","Pyuthan","Ramechhap","Rasuwa","Rautahat","Rolpa","Rupandehi","Salyan","Sankhuwasabha","Saptari","Sarlahi","Sindhuli","Sindhupalchok","Siraha","Solukhumbu","Sunsari","Surkhet","Syangja","Tanahun","Taplejung","Terhathum","Udayapur","Western Rukum"];
+function $(id) { return document.getElementById(id); }
+function show(el, text) { el.textContent = text; el.style.display = "block"; }
+function load() { try { return JSON.parse(localStorage.getItem(OUTBOX) || "[]"); } catch (e) { return []; } }
+function save(q) { try { localStorage.setItem(OUTBOX, JSON.stringify(q)); } catch (e) { /* private mode: still sends */ } }
+
+function setLang(l) {
+  lang = l; document.documentElement.lang = l; $("lang").textContent = l === "ne" ? "English" : "नेपाली";
+  document.querySelectorAll("[data-" + l + "]").forEach(function (el) { el.textContent = el.getAttribute("data-" + l); });
+}
+$("lang").onclick = function () { setLang(lang === "ne" ? "en" : "ne"); };
+DISTRICTS.forEach(function (d) { var o = document.createElement("option"); o.value = d; $("districts").appendChild(o); });
+document.querySelectorAll(".status button").forEach(function (b) {
+  b.onclick = function () {
+    status = b.getAttribute("data-v");
+    document.querySelectorAll(".status button").forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
+  };
+});
+
+var sending = false;  // one sender at a time, or a submit during a retry wait would post twice
+function flush(attempt) {
+  var q = load(); if (!q.length) { sending = false; return; }
+  if (attempt === 0 && sending) return;
+  sending = true;
+  fetch("checkin", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(q[0]) })
+    .then(function (r) {
+      if (r.status === 202 || (r.status >= 400 && r.status < 429)) {  // accepted, or a 4xx retrying won't fix
+        q = load(); q.shift(); save(q); show($("out"), T[lang].sent); sending = false; flush(0);
+      } else { throw new Error(r.status); }
+    })
+    .catch(function () {
+      var cap = Math.min(300, Math.pow(2, attempt + 1));
+      show($("out"), T[lang].retry);
+      setTimeout(function () { flush(attempt + 1); }, Math.ceil(Math.random() * cap) * 1000);
+    });
+}
+
+$("checkin").onsubmit = function (e) {
+  e.preventDefault();
+  if (!status) { show($("out"), T[lang].pick); return; }
+  var body = { phone: $("phone").value, status: status, district: $("district").value || null,
+               note: $("note").value, lang: lang,
+               contacts: $("contacts").value.split(",").map(function (s) { return s.trim(); }).filter(Boolean).slice(0, 3) };
+  var q = load(); q.push(body); save(q);
+  show($("out"), T[lang].saved); flush(0);
+};
+
+$("lookup").onsubmit = function (e) {
+  e.preventDefault();
+  fetch("status?phone=" + encodeURIComponent($("who").value)).then(function (r) { return r.json(); }).then(function (d) {
+    if (d.error) { show($("found"), d.error); return; }
+    if (!d.found) { show($("found"), d.phone + ": " + T[lang].none); return; }
+    var when = new Date(d.received_at).toLocaleString(lang === "ne" ? "ne-NP" : "en-GB", { timeZone: "Asia/Kathmandu" });
+    show($("found"), d.phone + ": " + T[lang].st[d.status] + (d.district ? " (" + d.district + ")" : "") + " · " + when);
+  }).catch(function () { show($("found"), T[lang].retry); });
+};
+
+fetch("events").then(function (r) { return r.json(); }).then(function (d) {
+  var e = d.events && d.events[0];
+  if (e && Date.now() - e.started_at < 14 * 864e5) show($("banner"), T[lang].ev + "M" + e.mag + " · " + e.place);
+}).catch(function () {});
+flush(0);
+</script>
+</body>
+</html>
