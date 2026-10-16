@@ -1,0 +1,1237 @@
+{
+  "summary": {
+    "quakes": 88,
+    "qualifying": 58,
+    "events_opened": 27,
+    "major": 6,
+    "years": 11.4
+  },
+  "quakes": [
+    {
+      "time_utc": "2015-04-21 14:02",
+      "mag": 5.0,
+      "depth_km": 10.0,
+      "place": "46 km SSE of Jumla, Nepal",
+      "outcome": "opened event",
+      "reason": "M5.0 29 km from Khalanga (Jajarkot)",
+      "usgs_id": "us2000281p"
+    },
+    {
+      "time_utc": "2015-04-25 06:11",
+      "mag": 7.8,
+      "depth_km": 8.22,
+      "place": "67 km NNE of Bharatpur, Nepal",
+      "outcome": "opened event",
+      "reason": "M7.8 27 km from Gorkha",
+      "usgs_id": "us20002926"
+    },
+    {
+      "time_utc": "2015-04-25 06:15",
+      "mag": 6.1,
+      "depth_km": 10.0,
+      "place": "0 km NNW of Dhulikhel, Nepal",
+      "outcome": "joined event",
+      "reason": "M6.1 24 km from Kathmandu",
+      "usgs_id": "us20002bi4"
+    },
+    {
+      "time_utc": "2015-04-25 06:18",
+      "mag": 5.6,
+      "depth_km": 10.0,
+      "place": "31 km SSE of Kodari, Nepal",
+      "outcome": "joined event",
+      "reason": "M5.6 2 km from Charikot (Dolakha)",
+      "usgs_id": "us20002bi0"
+    },
+    {
+      "time_utc": "2015-04-25 06:20",
+      "mag": 5.4,
+      "depth_km": 10.0,
+      "place": "Nepal",
+      "outcome": "joined event",
+      "reason": "M5.4 26 km from Gorkha",
+      "usgs_id": "us20002bi6"
+    },
+    {
+      "time_utc": "2015-04-25 06:22",
+      "mag": 5.1,
+      "depth_km": 10.0,
+      "place": "21 km NW of Kirtipur, Nepal",
+      "outcome": "joined event",
+      "reason": "M5.1 22 km from Kathmandu",
+      "usgs_id": "us20002bhs"
+    },
+    {
+      "time_utc": "2015-04-25 06:22",
+      "mag": 5.26,
+      "depth_km": 18.0,
+      "place": "12 km NNW of Nagarkot, Nepal",
+      "outcome": "joined event",
+      "reason": "M5.26 16 km from Kathmandu",
+      "usgs_id": "iscgem607260025"
+    },
+    {
+      "time_utc": "2015-04-25 06:25",
+      "mag": 5.0,
+      "depth_km": 10.0,
+      "place": "7 km ESE of Nagarkot, Nepal",
+      "outcome": "joined event",
+      "reason": "M5.0 26 km from Kathmandu",
+      "usgs_id": "us20002bfk"
+    },
+    {
+      "time_utc": "2015-04-25 06:37",
+      "mag": 5.1,
+      "depth_km": 10.0,
+      "place": "27 km SSW of Kodari, Nepal",
+      "outcome": "joined event",
+      "reason": "M5.1 21 km from Charikot (Dolakha)",
+      "usgs_id": "us2000292w"
+    },
+    {
+      "time_utc": "2015-04-25 06:45",
+      "mag": 6.6,
+      "depth_km": 10.0,
+      "place": "71 km NNE of Bharatpur, Nepal",
+      "outcome": "joined event",
+      "reason": "M6.6 31 km from Gorkha",
+      "usgs_id": "us2000292y"
+    },
+    {
+      "time_utc": "2015-04-25 06:53",
+      "mag": 5.0,
+      "depth_km": 10.0,
+      "place": "7 km W of Kirtipur, Nepal",
+      "outcome": "joined event",
+      "reason": "M5.0 13 km from Kathmandu",
+      "usgs_id": "us20002bf3"
+    },
+    {
+      "time_utc": "2015-04-25 06:56",
+      "mag": 5.5,
+      "depth_km": 10.0,
+      "place": "22 km WSW of Kodari, Nepal",
+      "outcome": "joined event",
+      "reason": "M5.5 36 km from Charikot (Dolakha)",
+      "usgs_id": "us20002934"
+    },
+    {
+      "time_utc": "2015-04-25 06:58",
+      "mag": 5.1,
+      "depth_km": 10.0,
+      "place": "26 km S of Kodari, Nepal",
+      "outcome": "joined event",
+      "reason": "M5.1 6 km from Charikot (Dolakha)",
+      "usgs_id": "us20002bfz"
+    },
+    {
+      "time_utc": "2015-04-25 07:47",
+      "mag": 5.0,
+      "depth_km": 10.0,
+      "place": "13 km NNE of Nagarkot, Nepal",
+      "outcome": "joined event",
+      "reason": "M5.0 29 km from Kathmandu",
+      "usgs_id": "us2000293p"
+    },
+    {
+      "time_utc": "2015-04-25 08:29",
+      "mag": 5.0,
+      "depth_km": 10.0,
+      "place": "33 km NNE of Bharatpur, Nepal",
+      "outcome": "joined event",
+      "reason": "M5.0 7 km from Gorkha",
+      "usgs_id": "us20002946"
+    },
+    {
+      "time_utc": "2015-04-25 08:55",
+      "mag": 5.3,
+      "depth_km": 10.0,
+      "place": "0 km WNW of Panauti, Nepal",
+      "outcome": "joined event",
+      "reason": "M5.3 24 km from Kathmandu",
+      "usgs_id": "us2000294d"
+    },
+    {
+      "time_utc": "2015-04-25 09:17",
+      "mag": 5.7,
+      "depth_km": 10.0,
+      "place": "69 km NE of Lobujya, Nepal",
+      "outcome": "ignored",
+      "reason": "150 km from Charikot (Dolakha), felt radius 120 km",
+      "usgs_id": "us2000294g"
+    },
+    {
+      "time_utc": "2015-04-25 12:44",
+      "mag": 5.2,
+      "depth_km": 10.0,
+      "place": "48 km NNE of Bharatpur, Nepal",
+      "outcome": "joined event",
+      "reason": "M5.2 13 km from Gorkha",
+      "usgs_id": "us2000295i"
+    },
+    {
+      "time_utc": "2015-04-25 17:42",
+      "mag": 5.1,
+      "depth_km": 10.0,
+      "place": "33 km NNW of Kodari, Nepal",
+      "outcome": "joined event",
+      "reason": "M5.1 66 km from Charikot (Dolakha)",
+      "usgs_id": "us2000297g"
+    },
+    {
+      "time_utc": "2015-04-25 23:16",
+      "mag": 5.1,
+      "depth_km": 13.61,
+      "place": "42 km WNW of Kirtipur, Nepal",
+      "outcome": "joined event",
+      "reason": "M5.1 33 km from Gorkha",
+      "usgs_id": "us2000299v"
+    },
+    {
+      "time_utc": "2015-04-26 07:09",
+      "mag": 6.7,
+      "depth_km": 22.91,
+      "place": "21 km SSE of Kodari, Nepal",
+      "outcome": "joined event",
+      "reason": "M6.7 11 km from Charikot (Dolakha)",
+      "usgs_id": "us200029bt"
+    },
+    {
+      "time_utc": "2015-04-26 16:26",
+      "mag": 5.0,
+      "depth_km": 14.0,
+      "place": "17 km SSW of Kodari, Nepal",
+      "outcome": "joined event",
+      "reason": "M5.0 24 km from Charikot (Dolakha)",
+      "usgs_id": "us200029ea"
+    },
+    {
+      "time_utc": "2015-04-27 12:35",
+      "mag": 5.1,
+      "depth_km": 31.71,
+      "place": "13 km ESE of Ilam, Nepal",
+      "outcome": "joined event",
+      "reason": "M5.1 74 km from Dhankuta",
+      "usgs_id": "us200029k7"
+    },
+    {
+      "time_utc": "2015-05-12 07:05",
+      "mag": 7.3,
+      "depth_km": 15.0,
+      "place": "Nepal",
+      "outcome": "opened event",
+      "reason": "M7.3 16 km from Charikot (Dolakha)",
+      "usgs_id": "us20002ejl"
+    },
+    {
+      "time_utc": "2015-05-12 07:17",
+      "mag": 5.5,
+      "depth_km": 13.01,
+      "place": "37 km SE of Kodari, Nepal",
+      "outcome": "joined event",
+      "reason": "M5.5 19 km from Charikot (Dolakha)",
+      "usgs_id": "us20002ek0"
+    },
+    {
+      "time_utc": "2015-05-12 07:23",
+      "mag": 5.0,
+      "depth_km": 10.0,
+      "place": "52 km WSW of Namche Bazar, Nepal",
+      "outcome": "joined event",
+      "reason": "M5.0 26 km from Charikot (Dolakha)",
+      "usgs_id": "us10002bgy"
+    },
+    {
+      "time_utc": "2015-05-12 07:34",
+      "mag": 5.4,
+      "depth_km": 10.0,
+      "place": "37 km SE of Kodari, Nepal",
+      "outcome": "joined event",
+      "reason": "M5.4 23 km from Charikot (Dolakha)",
+      "usgs_id": "us20002ek3"
+    },
+    {
+      "time_utc": "2015-05-12 07:36",
+      "mag": 6.3,
+      "depth_km": 15.0,
+      "place": "42 km SSE of Kodari, Nepal",
+      "outcome": "joined event",
+      "reason": "M6.3 14 km from Charikot (Dolakha)",
+      "usgs_id": "us20002ek5"
+    },
+    {
+      "time_utc": "2015-05-12 08:06",
+      "mag": 5.0,
+      "depth_km": 15.0,
+      "place": "27 km SSE of Kodari, Nepal",
+      "outcome": "joined event",
+      "reason": "M5.0 6 km from Charikot (Dolakha)",
+      "usgs_id": "us20002ekk"
+    },
+    {
+      "time_utc": "2015-05-12 08:13",
+      "mag": 5.1,
+      "depth_km": 15.0,
+      "place": "23 km ENE of Nagarkot, Nepal",
+      "outcome": "joined event",
+      "reason": "M5.1 29 km from Charikot (Dolakha)",
+      "usgs_id": "us20002ekq"
+    },
+    {
+      "time_utc": "2015-05-12 08:21",
+      "mag": 5.2,
+      "depth_km": 15.0,
+      "place": "30 km SE of Kodari, Nepal",
+      "outcome": "joined event",
+      "reason": "M5.2 12 km from Charikot (Dolakha)",
+      "usgs_id": "us20002ekr"
+    },
+    {
+      "time_utc": "2015-05-12 21:25",
+      "mag": 5.2,
+      "depth_km": 10.0,
+      "place": "23 km ENE of Bharatpur, Nepal",
+      "outcome": "joined event",
+      "reason": "M5.2 24 km from Gorkha",
+      "usgs_id": "us20002etn"
+    },
+    {
+      "time_utc": "2015-05-13 21:38",
+      "mag": 5.0,
+      "depth_km": 8.38,
+      "place": "28 km SSE of Kodari, Nepal",
+      "outcome": "joined event",
+      "reason": "M5.0 6 km from Charikot (Dolakha)",
+      "usgs_id": "us100028tz"
+    },
+    {
+      "time_utc": "2015-05-16 11:34",
+      "mag": 5.5,
+      "depth_km": 7.0,
+      "place": "45 km SSE of Kodari, Nepal",
+      "outcome": "joined event",
+      "reason": "M5.5 13 km from Charikot (Dolakha)",
+      "usgs_id": "us100029rn"
+    },
+    {
+      "time_utc": "2015-08-23 09:02",
+      "mag": 5.0,
+      "depth_km": 10.0,
+      "place": "18 km SE of Kodari, Nepal",
+      "outcome": "opened event",
+      "reason": "M5.0 19 km from Charikot (Dolakha)",
+      "usgs_id": "us100034be"
+    },
+    {
+      "time_utc": "2015-11-19 04:15",
+      "mag": 5.0,
+      "depth_km": 16.51,
+      "place": "21 km NE of Nagarkot, Nepal",
+      "outcome": "opened event",
+      "reason": "M5.0 38 km from Kathmandu",
+      "usgs_id": "us10003zfw"
+    },
+    {
+      "time_utc": "2015-12-18 22:16",
+      "mag": 5.4,
+      "depth_km": 10.0,
+      "place": "53 km WNW of Jumla, Nepal",
+      "outcome": "opened event",
+      "reason": "M5.4 47 km from Chainpur (Bajhang)",
+      "usgs_id": "us1000488j"
+    },
+    {
+      "time_utc": "2016-02-05 16:20",
+      "mag": 5.2,
+      "depth_km": 23.53,
+      "place": "19 km N of Kathmandu, Nepal",
+      "outcome": "opened event",
+      "reason": "M5.2 18 km from Kathmandu",
+      "usgs_id": "us20004y4t"
+    },
+    {
+      "time_utc": "2016-02-21 18:10",
+      "mag": 5.1,
+      "depth_km": 16.72,
+      "place": "40 km NE of Bharatpur, Nepal",
+      "outcome": "opened event",
+      "reason": "M5.1 8 km from Gorkha",
+      "usgs_id": "us10004rjm"
+    },
+    {
+      "time_utc": "2016-05-22 01:48",
+      "mag": 5.4,
+      "depth_km": 9.36,
+      "place": "89 km NE of Lobujya, Nepal",
+      "outcome": "ignored",
+      "reason": "165 km from Dhankuta, felt radius 80 km",
+      "usgs_id": "us10005j6b"
+    },
+    {
+      "time_utc": "2016-05-22 02:05",
+      "mag": 5.1,
+      "depth_km": 4.44,
+      "place": "94 km NE of Lobujya, Nepal",
+      "outcome": "ignored",
+      "reason": "174 km from Charikot (Dolakha), felt radius 80 km",
+      "usgs_id": "us10005j6d"
+    },
+    {
+      "time_utc": "2016-11-27 23:35",
+      "mag": 5.4,
+      "depth_km": 10.0,
+      "place": "17 km W of Namche Bazar, Nepal",
+      "outcome": "opened event",
+      "reason": "M5.4 52 km from Charikot (Dolakha)",
+      "usgs_id": "us10007cuh"
+    },
+    {
+      "time_utc": "2016-12-01 16:52",
+      "mag": 5.2,
+      "depth_km": 31.96,
+      "place": "18 km NE of Dharchula, India",
+      "outcome": "opened event",
+      "reason": "M5.2 73 km from Chainpur (Bajhang)",
+      "usgs_id": "us10007e1x"
+    },
+    {
+      "time_utc": "2017-02-01 10:07",
+      "mag": 5.1,
+      "depth_km": 10.0,
+      "place": "193 km NE of Jumla, Nepal",
+      "outcome": "ignored",
+      "reason": "195 km from Jumla, felt radius 80 km",
+      "usgs_id": "us10007wlj"
+    },
+    {
+      "time_utc": "2017-02-06 17:03",
+      "mag": 5.1,
+      "depth_km": 16.05,
+      "place": "36 km NW of Pipalkoti, India",
+      "outcome": "ignored",
+      "reason": "231 km from Dipayal (Doti), felt radius 80 km",
+      "usgs_id": "us20008hyg"
+    },
+    {
+      "time_utc": "2017-12-06 15:19",
+      "mag": 5.1,
+      "depth_km": 10.0,
+      "place": "34 km NW of Pipalkoti, India",
+      "outcome": "ignored",
+      "reason": "230 km from Dipayal (Doti), felt radius 80 km",
+      "usgs_id": "us1000bmru"
+    },
+    {
+      "time_utc": "2017-12-08 02:51",
+      "mag": 5.0,
+      "depth_km": 10.0,
+      "place": "28 km SE of Kodari, Nepal",
+      "outcome": "opened event",
+      "reason": "M5.0 15 km from Charikot (Dolakha)",
+      "usgs_id": "us2000c1xk"
+    },
+    {
+      "time_utc": "2018-08-01 15:46",
+      "mag": 5.2,
+      "depth_km": 10.0,
+      "place": "173 km NW of Rikaze, China",
+      "outcome": "ignored",
+      "reason": "335 km from Charikot (Dolakha), felt radius 80 km",
+      "usgs_id": "us2000gj0i"
+    },
+    {
+      "time_utc": "2018-10-31 23:09",
+      "mag": 5.0,
+      "depth_km": 10.0,
+      "place": "179 km NW of Rikaze, China",
+      "outcome": "ignored",
+      "reason": "323 km from Charikot (Dolakha), felt radius 80 km",
+      "usgs_id": "us2000i4zp"
+    },
+    {
+      "time_utc": "2018-12-23 19:32",
+      "mag": 5.8,
+      "depth_km": 10.0,
+      "place": "177 km NW of Rikaze, China",
+      "outcome": "ignored",
+      "reason": "341 km from Charikot (Dolakha), felt radius 120 km",
+      "usgs_id": "us2000iws8"
+    },
+    {
+      "time_utc": "2018-12-23 19:35",
+      "mag": 5.0,
+      "depth_km": 10.0,
+      "place": "197 km NE of Saga, China",
+      "outcome": "ignored",
+      "reason": "320 km from Charikot (Dolakha), felt radius 80 km",
+      "usgs_id": "us2000j2xb"
+    },
+    {
+      "time_utc": "2019-01-20 14:28",
+      "mag": 5.2,
+      "depth_km": 9.85,
+      "place": "175 km NW of Rikaze, China",
+      "outcome": "ignored",
+      "reason": "340 km from Charikot (Dolakha), felt radius 80 km",
+      "usgs_id": "us2000j6mf"
+    },
+    {
+      "time_utc": "2019-11-19 13:30",
+      "mag": 5.0,
+      "depth_km": 10.0,
+      "place": "20 km ENE of Dipayal, Nepal",
+      "outcome": "opened event",
+      "reason": "M5.0 21 km from Dipayal (Doti)",
+      "usgs_id": "us700069vd"
+    },
+    {
+      "time_utc": "2020-03-20 01:33",
+      "mag": 5.7,
+      "depth_km": 10.0,
+      "place": "85 km NE of Lobujya, Nepal",
+      "outcome": "ignored",
+      "reason": "162 km from Charikot (Dolakha), felt radius 120 km",
+      "usgs_id": "us70008cld"
+    },
+    {
+      "time_utc": "2020-09-15 23:34",
+      "mag": 5.3,
+      "depth_km": 10.0,
+      "place": "14 km SSW of Kodari, Nepal",
+      "outcome": "opened event",
+      "reason": "M5.3 25 km from Charikot (Dolakha)",
+      "usgs_id": "us7000bnsh"
+    },
+    {
+      "time_utc": "2021-02-02 02:31",
+      "mag": 5.0,
+      "depth_km": 8.7,
+      "place": "110 km NNE of Lobujya, Nepal",
+      "outcome": "ignored",
+      "reason": "183 km from Charikot (Dolakha), felt radius 80 km",
+      "usgs_id": "us6000ddsr"
+    },
+    {
+      "time_utc": "2021-02-04 05:06",
+      "mag": 5.1,
+      "depth_km": 10.0,
+      "place": "104 km NNE of Lobujya, Nepal",
+      "outcome": "ignored",
+      "reason": "178 km from Charikot (Dolakha), felt radius 80 km",
+      "usgs_id": "us6000decu"
+    },
+    {
+      "time_utc": "2021-04-05 15:19",
+      "mag": 5.2,
+      "depth_km": 10.0,
+      "place": "35 km NNW of Samtse, Bhutan",
+      "outcome": "ignored",
+      "reason": "162 km from Dhankuta, felt radius 80 km",
+      "usgs_id": "us6000dz5d"
+    },
+    {
+      "time_utc": "2021-05-18 23:57",
+      "mag": 5.3,
+      "depth_km": 10.0,
+      "place": "36 km E of Pokhara, Nepal",
+      "outcome": "opened event",
+      "reason": "M5.3 35 km from Pokhara",
+      "usgs_id": "us7000e4aq"
+    },
+    {
+      "time_utc": "2021-11-05 01:48",
+      "mag": 5.0,
+      "depth_km": 10.0,
+      "place": "115 km NNE of Lobujya, Nepal",
+      "outcome": "ignored",
+      "reason": "189 km from Charikot (Dolakha), felt radius 80 km",
+      "usgs_id": "us7000frkq"
+    },
+    {
+      "time_utc": "2022-07-31 02:28",
+      "mag": 5.1,
+      "depth_km": 10.0,
+      "place": "26 km W of Bhojpur, Nepal",
+      "outcome": "opened event",
+      "reason": "M5.1 56 km from Dhankuta",
+      "usgs_id": "us6000i6vr"
+    },
+    {
+      "time_utc": "2022-11-08 20:27",
+      "mag": 5.7,
+      "depth_km": 11.0,
+      "place": "Nepal",
+      "outcome": "opened event",
+      "reason": "M5.7 22 km from Dipayal (Doti)",
+      "usgs_id": "us7000incn"
+    },
+    {
+      "time_utc": "2022-11-12 14:27",
+      "mag": 5.2,
+      "depth_km": 10.0,
+      "place": "25 km ENE of Dipayal, Nepal",
+      "outcome": "opened event",
+      "reason": "M5.2 22 km from Chainpur (Bajhang)",
+      "usgs_id": "us7000ipbc"
+    },
+    {
+      "time_utc": "2023-01-24 08:58",
+      "mag": 5.4,
+      "depth_km": 33.11,
+      "place": "60 km NW of Jumla, Nepal",
+      "outcome": "opened event",
+      "reason": "M5.4 45 km from Chainpur (Bajhang)",
+      "usgs_id": "us6000jivm"
+    },
+    {
+      "time_utc": "2023-04-27 19:45",
+      "mag": 5.1,
+      "depth_km": 10.0,
+      "place": "72 km NE of Dipayal, Nepal",
+      "outcome": "opened event",
+      "reason": "M5.1 35 km from Chainpur (Bajhang)",
+      "usgs_id": "us7000jwdq"
+    },
+    {
+      "time_utc": "2023-10-03 09:21",
+      "mag": 5.7,
+      "depth_km": 13.0,
+      "place": "39 km NE of Dipayal, Nepal",
+      "outcome": "opened event",
+      "reason": "M5.7 7 km from Chainpur (Bajhang)",
+      "usgs_id": "us6000lcgj"
+    },
+    {
+      "time_utc": "2023-10-07 06:00",
+      "mag": 5.0,
+      "depth_km": 10.0,
+      "place": "38 km NE of Dipayal, Nepal",
+      "outcome": "opened event",
+      "reason": "M5.0 4 km from Chainpur (Bajhang)",
+      "usgs_id": "us6000ldp9"
+    },
+    {
+      "time_utc": "2023-10-22 01:54",
+      "mag": 5.2,
+      "depth_km": 25.706,
+      "place": "36 km NE of Bharatpur, Nepal",
+      "outcome": "opened event",
+      "reason": "M5.2 16 km from Gorkha",
+      "usgs_id": "us6000lh8c"
+    },
+    {
+      "time_utc": "2023-11-03 18:02",
+      "mag": 5.7,
+      "depth_km": 12.0,
+      "place": "43 km E of Dailekh, Nepal",
+      "outcome": "opened event",
+      "reason": "M5.7 18 km from Khalanga (Jajarkot)",
+      "usgs_id": "us7000l8p5"
+    },
+    {
+      "time_utc": "2023-11-06 10:46",
+      "mag": 5.3,
+      "depth_km": 10.0,
+      "place": "34 km E of Dailekh, Nepal",
+      "outcome": "opened event",
+      "reason": "M5.3 22 km from Khalanga (Jajarkot)",
+      "usgs_id": "us7000l94m"
+    },
+    {
+      "time_utc": "2024-12-20 22:29",
+      "mag": 5.0,
+      "depth_km": 10.0,
+      "place": "60 km WNW of Jumla, Nepal",
+      "outcome": "opened event",
+      "reason": "M5.0 40 km from Chainpur (Bajhang)",
+      "usgs_id": "us7000p0hw"
+    },
+    {
+      "time_utc": "2025-01-07 01:05",
+      "mag": 7.1,
+      "depth_km": 10.0,
+      "place": "2025 Southern Tibetan Plateau Earthquake",
+      "outcome": "opened event",
+      "reason": "M7.1 168 km from Charikot (Dolakha)",
+      "usgs_id": "us6000pi9w"
+    },
+    {
+      "time_utc": "2025-01-07 01:09",
+      "mag": 5.4,
+      "depth_km": 10.0,
+      "place": "96 km NNE of Lobuche, Nepal",
+      "outcome": "ignored",
+      "reason": "166 km from Charikot (Dolakha), felt radius 80 km",
+      "usgs_id": "us6000pks1"
+    },
+    {
+      "time_utc": "2025-01-07 01:10",
+      "mag": 5.2,
+      "depth_km": 10.0,
+      "place": "100 km NNE of Lobuche, Nepal",
+      "outcome": "ignored",
+      "reason": "166 km from Charikot (Dolakha), felt radius 80 km",
+      "usgs_id": "us6000pks6"
+    },
+    {
+      "time_utc": "2025-01-07 01:13",
+      "mag": 5.2,
+      "depth_km": 10.0,
+      "place": "Southern Tibetan Plateau",
+      "outcome": "ignored",
+      "reason": "163 km from Dhankuta, felt radius 80 km",
+      "usgs_id": "us6000pia7"
+    },
+    {
+      "time_utc": "2025-01-07 01:14",
+      "mag": 5.2,
+      "depth_km": 10.0,
+      "place": "83 km NE of Lobuche, Nepal",
+      "outcome": "ignored",
+      "reason": "161 km from Charikot (Dolakha), felt radius 80 km",
+      "usgs_id": "us6000pkpp"
+    },
+    {
+      "time_utc": "2025-01-07 01:24",
+      "mag": 5.0,
+      "depth_km": 10.0,
+      "place": "Southern Tibetan Plateau",
+      "outcome": "ignored",
+      "reason": "167 km from Charikot (Dolakha), felt radius 80 km",
+      "usgs_id": "us6000piak"
+    },
+    {
+      "time_utc": "2025-01-07 01:37",
+      "mag": 5.0,
+      "depth_km": 10.0,
+      "place": "Southern Tibetan Plateau",
+      "outcome": "ignored",
+      "reason": "172 km from Charikot (Dolakha), felt radius 80 km",
+      "usgs_id": "us6000piar"
+    },
+    {
+      "time_utc": "2025-01-08 03:51",
+      "mag": 5.0,
+      "depth_km": 10.0,
+      "place": "Southern Tibetan Plateau",
+      "outcome": "ignored",
+      "reason": "156 km from Charikot (Dolakha), felt radius 80 km",
+      "usgs_id": "us6000piij"
+    },
+    {
+      "time_utc": "2025-01-13 12:57",
+      "mag": 5.0,
+      "depth_km": 10.0,
+      "place": "Southern Tibetan Plateau",
+      "outcome": "ignored",
+      "reason": "150 km from Charikot (Dolakha), felt radius 80 km",
+      "usgs_id": "us6000pjp9"
+    },
+    {
+      "time_utc": "2025-01-13 12:58",
+      "mag": 5.1,
+      "depth_km": 10.0,
+      "place": "Southern Tibetan Plateau",
+      "outcome": "ignored",
+      "reason": "162 km from Charikot (Dolakha), felt radius 80 km",
+      "usgs_id": "us6000pjpb"
+    },
+    {
+      "time_utc": "2025-01-20 21:03",
+      "mag": 5.0,
+      "depth_km": 10.0,
+      "place": "Southern Tibetan Plateau",
+      "outcome": "ignored",
+      "reason": "158 km from Dhankuta, felt radius 80 km",
+      "usgs_id": "us6000plbf"
+    },
+    {
+      "time_utc": "2025-02-27 21:06",
+      "mag": 5.0,
+      "depth_km": 10.0,
+      "place": "11 km SSW of Kodari, Nepal",
+      "outcome": "joined event",
+      "reason": "M5.0 24 km from Charikot (Dolakha)",
+      "usgs_id": "us6000pvwf"
+    },
+    {
+      "time_utc": "2025-03-08 08:50",
+      "mag": 5.0,
+      "depth_km": 10.0,
+      "place": "100 km NE of Lobuche, Nepal",
+      "outcome": "ignored",
+      "reason": "178 km from Dhankuta, felt radius 80 km",
+      "usgs_id": "us6000pxlv"
+    },
+    {
+      "time_utc": "2025-05-11 21:11",
+      "mag": 5.5,
+      "depth_km": 9.0,
+      "place": "126 km W of Rikaze, China",
+      "outcome": "ignored",
+      "reason": "218 km from Charikot (Dolakha), felt radius 120 km",
+      "usgs_id": "us7000pyq7"
+    },
+    {
+      "time_utc": "2025-09-12 21:42",
+      "mag": 5.0,
+      "depth_km": 10.0,
+      "place": "137 km N of Lobuche, Nepal",
+      "outcome": "ignored",
+      "reason": "194 km from Charikot (Dolakha), felt radius 80 km",
+      "usgs_id": "us7000qvtp"
+    },
+    {
+      "time_utc": "2026-08-26 02:52",
+      "mag": 5.2,
+      "depth_km": 0.0,
+      "place": "55 km NW of Kodari, Nepal",
+      "outcome": "opened event",
+      "reason": "M5.2 64 km from Kathmandu",
+      "usgs_id": "us7000tbwb"
+    },
+    {
+      "time_utc": "2026-09-03 08:16",
+      "mag": 5.1,
+      "depth_km": 10.0,
+      "place": "119 km NE of Joshimath, India",
+      "outcome": "ignored",
+      "reason": "221 km from Chainpur (Bajhang), felt radius 80 km",
+      "usgs_id": "us7000tdv4"
+    }
+  ],
+  "events": [
+    {
+      "event_id": "2026-08-26T0252Z-us7000tbwb",
+      "started_at": 1787712730000,
+      "mag": 5.2,
+      "place": "55 km NW of Kodari, Nepal",
+      "lat": 28.271,
+      "lon": 85.515,
+      "depth_km": 0.0,
+      "usgs_ids": [
+        "us7000tbwb"
+      ],
+      "nearest_city": "Kathmandu",
+      "distance_km": 64,
+      "opened_by": "usgs-feed",
+      "severity": "watch"
+    },
+    {
+      "event_id": "2025-01-07T0105Z-us6000pi9w",
+      "started_at": 1736211916734,
+      "mag": 7.1,
+      "place": "2025 Southern Tibetan Plateau Earthquake",
+      "lat": 28.6036,
+      "lon": 87.3781,
+      "depth_km": 10.0,
+      "usgs_ids": [
+        "us6000pi9w"
+      ],
+      "nearest_city": "Charikot (Dolakha)",
+      "distance_km": 168,
+      "opened_by": "usgs-feed",
+      "severity": "major"
+    },
+    {
+      "event_id": "2024-12-20T2229Z-us7000p0hw",
+      "started_at": 1734733742221,
+      "mag": 5.0,
+      "place": "60 km WNW of Jumla, Nepal",
+      "lat": 29.4923,
+      "lon": 81.6099,
+      "depth_km": 10.0,
+      "usgs_ids": [
+        "us7000p0hw"
+      ],
+      "nearest_city": "Chainpur (Bajhang)",
+      "distance_km": 40,
+      "opened_by": "usgs-feed",
+      "severity": "watch"
+    },
+    {
+      "event_id": "2023-11-06T1046Z-us7000l94m",
+      "started_at": 1699267599805,
+      "mag": 5.3,
+      "place": "34 km E of Dailekh, Nepal",
+      "lat": 28.8564,
+      "lon": 82.0652,
+      "depth_km": 10.0,
+      "usgs_ids": [
+        "us7000l94m"
+      ],
+      "nearest_city": "Khalanga (Jajarkot)",
+      "distance_km": 22,
+      "opened_by": "usgs-feed",
+      "severity": "watch"
+    },
+    {
+      "event_id": "2023-11-03T1802Z-us7000l8p5",
+      "started_at": 1699034573465,
+      "mag": 5.7,
+      "place": "43 km E of Dailekh, Nepal",
+      "lat": 28.858,
+      "lon": 82.1531,
+      "depth_km": 12.0,
+      "usgs_ids": [
+        "us7000l8p5"
+      ],
+      "nearest_city": "Khalanga (Jajarkot)",
+      "distance_km": 18,
+      "opened_by": "usgs-feed",
+      "severity": "major"
+    },
+    {
+      "event_id": "2023-10-22T0154Z-us6000lh8c",
+      "started_at": 1697939661100,
+      "mag": 5.2,
+      "place": "36 km NE of Bharatpur, Nepal",
+      "lat": 27.8879,
+      "lon": 84.7252,
+      "depth_km": 25.706,
+      "usgs_ids": [
+        "us6000lh8c"
+      ],
+      "nearest_city": "Gorkha",
+      "distance_km": 16,
+      "opened_by": "usgs-feed",
+      "severity": "watch"
+    },
+    {
+      "event_id": "2023-10-07T0600Z-us6000ldp9",
+      "started_at": 1696658401972,
+      "mag": 5.0,
+      "place": "38 km NE of Dipayal, Nepal",
+      "lat": 29.5133,
+      "lon": 81.2055,
+      "depth_km": 10.0,
+      "usgs_ids": [
+        "us6000ldp9"
+      ],
+      "nearest_city": "Chainpur (Bajhang)",
+      "distance_km": 4,
+      "opened_by": "usgs-feed",
+      "severity": "watch"
+    },
+    {
+      "event_id": "2023-10-03T0921Z-us6000lcgj",
+      "started_at": 1696324863018,
+      "mag": 5.7,
+      "place": "39 km NE of Dipayal, Nepal",
+      "lat": 29.4973,
+      "lon": 81.242,
+      "depth_km": 13.0,
+      "usgs_ids": [
+        "us6000lcgj"
+      ],
+      "nearest_city": "Chainpur (Bajhang)",
+      "distance_km": 7,
+      "opened_by": "usgs-feed",
+      "severity": "major"
+    },
+    {
+      "event_id": "2023-04-27T1945Z-us7000jwdq",
+      "started_at": 1682624753627,
+      "mag": 5.1,
+      "place": "72 km NE of Dipayal, Nepal",
+      "lat": 29.6212,
+      "lon": 81.5483,
+      "depth_km": 10.0,
+      "usgs_ids": [
+        "us7000jwdq"
+      ],
+      "nearest_city": "Chainpur (Bajhang)",
+      "distance_km": 35,
+      "opened_by": "usgs-feed",
+      "severity": "watch"
+    },
+    {
+      "event_id": "2023-01-24T0858Z-us6000jivm",
+      "started_at": 1674550713123,
+      "mag": 5.4,
+      "place": "60 km NW of Jumla, Nepal",
+      "lat": 29.5825,
+      "lon": 81.6638,
+      "depth_km": 33.11,
+      "usgs_ids": [
+        "us6000jivm"
+      ],
+      "nearest_city": "Chainpur (Bajhang)",
+      "distance_km": 45,
+      "opened_by": "usgs-feed",
+      "severity": "watch"
+    },
+    {
+      "event_id": "2022-11-12T1427Z-us7000ipbc",
+      "started_at": 1668263225131,
+      "mag": 5.2,
+      "place": "25 km ENE of Dipayal, Nepal",
+      "lat": 29.3523,
+      "lon": 81.1777,
+      "depth_km": 10.0,
+      "usgs_ids": [
+        "us7000ipbc"
+      ],
+      "nearest_city": "Chainpur (Bajhang)",
+      "distance_km": 22,
+      "opened_by": "usgs-feed",
+      "severity": "watch"
+    },
+    {
+      "event_id": "2022-11-08T2027Z-us7000incn",
+      "started_at": 1667939242316,
+      "mag": 5.7,
+      "place": "Nepal",
+      "lat": 29.2917,
+      "lon": 81.1593,
+      "depth_km": 11.0,
+      "usgs_ids": [
+        "us7000incn"
+      ],
+      "nearest_city": "Dipayal (Doti)",
+      "distance_km": 22,
+      "opened_by": "usgs-feed",
+      "severity": "major"
+    },
+    {
+      "event_id": "2022-07-31T0228Z-us6000i6vr",
+      "started_at": 1659234488777,
+      "mag": 5.1,
+      "place": "26 km W of Bhojpur, Nepal",
+      "lat": 27.1316,
+      "lon": 86.7827,
+      "depth_km": 10.0,
+      "usgs_ids": [
+        "us6000i6vr"
+      ],
+      "nearest_city": "Dhankuta",
+      "distance_km": 56,
+      "opened_by": "usgs-feed",
+      "severity": "watch"
+    },
+    {
+      "event_id": "2021-05-18T2357Z-us7000e4aq",
+      "started_at": 1621382278646,
+      "mag": 5.3,
+      "place": "36 km E of Pokhara, Nepal",
+      "lat": 28.2785,
+      "lon": 84.3373,
+      "depth_km": 10.0,
+      "usgs_ids": [
+        "us7000e4aq"
+      ],
+      "nearest_city": "Pokhara",
+      "distance_km": 35,
+      "opened_by": "usgs-feed",
+      "severity": "watch"
+    },
+    {
+      "event_id": "2020-09-15T2334Z-us7000bnsh",
+      "started_at": 1600212843386,
+      "mag": 5.3,
+      "place": "14 km SSW of Kodari, Nepal",
+      "lat": 27.8464,
+      "lon": 85.8765,
+      "depth_km": 10.0,
+      "usgs_ids": [
+        "us7000bnsh"
+      ],
+      "nearest_city": "Charikot (Dolakha)",
+      "distance_km": 25,
+      "opened_by": "usgs-feed",
+      "severity": "watch"
+    },
+    {
+      "event_id": "2019-11-19T1330Z-us700069vd",
+      "started_at": 1574170255900,
+      "mag": 5.0,
+      "place": "20 km ENE of Dipayal, Nepal",
+      "lat": 29.3228,
+      "lon": 81.1433,
+      "depth_km": 10.0,
+      "usgs_ids": [
+        "us700069vd"
+      ],
+      "nearest_city": "Dipayal (Doti)",
+      "distance_km": 21,
+      "opened_by": "usgs-feed",
+      "severity": "watch"
+    },
+    {
+      "event_id": "2017-12-08T0251Z-us2000c1xk",
+      "started_at": 1512701478860,
+      "mag": 5.0,
+      "place": "28 km SE of Kodari, Nepal",
+      "lat": 27.7618,
+      "lon": 86.1471,
+      "depth_km": 10.0,
+      "usgs_ids": [
+        "us2000c1xk"
+      ],
+      "nearest_city": "Charikot (Dolakha)",
+      "distance_km": 15,
+      "opened_by": "usgs-feed",
+      "severity": "watch"
+    },
+    {
+      "event_id": "2016-12-01T1652Z-us10007e1x",
+      "started_at": 1480611170110,
+      "mag": 5.2,
+      "place": "18 km NE of Dharchula, India",
+      "lat": 29.979,
+      "lon": 80.6321,
+      "depth_km": 31.96,
+      "usgs_ids": [
+        "us10007e1x"
+      ],
+      "nearest_city": "Chainpur (Bajhang)",
+      "distance_km": 73,
+      "opened_by": "usgs-feed",
+      "severity": "watch"
+    },
+    {
+      "event_id": "2016-11-27T2335Z-us10007cuh",
+      "started_at": 1480289721020,
+      "mag": 5.4,
+      "place": "17 km W of Namche Bazar, Nepal",
+      "lat": 27.8015,
+      "lon": 86.5319,
+      "depth_km": 10.0,
+      "usgs_ids": [
+        "us10007cuh"
+      ],
+      "nearest_city": "Charikot (Dolakha)",
+      "distance_km": 52,
+      "opened_by": "usgs-feed",
+      "severity": "watch"
+    },
+    {
+      "event_id": "2016-02-21T1810Z-us10004rjm",
+      "started_at": 1456078200970,
+      "mag": 5.1,
+      "place": "40 km NE of Bharatpur, Nepal",
+      "lat": 27.9633,
+      "lon": 84.6943,
+      "depth_km": 16.72,
+      "usgs_ids": [
+        "us10004rjm"
+      ],
+      "nearest_city": "Gorkha",
+      "distance_km": 8,
+      "opened_by": "usgs-feed",
+      "severity": "watch"
+    },
+    {
+      "event_id": "2016-02-05T1620Z-us20004y4t",
+      "started_at": 1454689211740,
+      "mag": 5.2,
+      "place": "19 km N of Kathmandu, Nepal",
+      "lat": 27.8782,
+      "lon": 85.3377,
+      "depth_km": 23.53,
+      "usgs_ids": [
+        "us20004y4t"
+      ],
+      "nearest_city": "Kathmandu",
+      "distance_km": 18,
+      "opened_by": "usgs-feed",
+      "severity": "watch"
+    },
+    {
+      "event_id": "2015-12-18T2216Z-us1000488j",
+      "started_at": 1450477016550,
+      "mag": 5.4,
+      "place": "53 km WNW of Jumla, Nepal",
+      "lat": 29.3985,
+      "lon": 81.6541,
+      "depth_km": 10.0,
+      "usgs_ids": [
+        "us1000488j"
+      ],
+      "nearest_city": "Chainpur (Bajhang)",
+      "distance_km": 47,
+      "opened_by": "usgs-feed",
+      "severity": "watch"
+    },
+    {
+      "event_id": "2015-11-19T0415Z-us10003zfw",
+      "started_at": 1447906552600,
+      "mag": 5.0,
+      "place": "21 km NE of Nagarkot, Nepal",
+      "lat": 27.8525,
+      "lon": 85.6776,
+      "depth_km": 16.51,
+      "usgs_ids": [
+        "us10003zfw"
+      ],
+      "nearest_city": "Kathmandu",
+      "distance_km": 38,
+      "opened_by": "usgs-feed",
+      "severity": "watch"
+    },
+    {
+      "event_id": "2015-08-23T0902Z-us100034be",
+      "started_at": 1440320525080,
+      "mag": 5.0,
+      "place": "18 km SE of Kodari, Nepal",
+      "lat": 27.8355,
+      "lon": 86.0795,
+      "depth_km": 10.0,
+      "usgs_ids": [
+        "us100034be"
+      ],
+      "nearest_city": "Charikot (Dolakha)",
+      "distance_km": 19,
+      "opened_by": "usgs-feed",
+      "severity": "watch"
+    },
+    {
+      "event_id": "2015-05-12T0705Z-us20002ejl",
+      "started_at": 1431414319730,
+      "mag": 7.3,
+      "place": "Nepal",
+      "lat": 27.8087,
+      "lon": 86.0655,
+      "depth_km": 15.0,
+      "usgs_ids": [
+        "us20002ejl"
+      ],
+      "nearest_city": "Charikot (Dolakha)",
+      "distance_km": 16,
+      "opened_by": "usgs-feed",
+      "severity": "major"
+    },
+    {
+      "event_id": "2015-04-25T0611Z-us20002926",
+      "started_at": 1429942285950,
+      "mag": 7.8,
+      "place": "67 km NNE of Bharatpur, Nepal",
+      "lat": 28.2305,
+      "lon": 84.7314,
+      "depth_km": 8.22,
+      "usgs_ids": [
+        "us20002926"
+      ],
+      "nearest_city": "Gorkha",
+      "distance_km": 27,
+      "opened_by": "usgs-feed",
+      "severity": "major"
+    },
+    {
+      "event_id": "2015-04-21T1402Z-us2000281p",
+      "started_at": 1429624935550,
+      "mag": 5.0,
+      "place": "46 km SSE of Jumla, Nepal",
+      "lat": 28.8947,
+      "lon": 82.3938,
+      "depth_km": 10.0,
+      "usgs_ids": [
+        "us2000281p"
+      ],
+      "nearest_city": "Khalanga (Jajarkot)",
+      "distance_km": 29,
+      "opened_by": "usgs-feed",
+      "severity": "watch"
+    }
+  ]
+}

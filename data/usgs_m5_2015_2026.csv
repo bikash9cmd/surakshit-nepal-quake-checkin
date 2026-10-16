@@ -1,0 +1,89 @@
+time,latitude,longitude,depth,mag,magType,place,id
+2015-04-21T14:02:15.550Z,28.8947,82.3938,10,5,mb,"46 km SSE of Jumla, Nepal",us2000281p
+2015-04-25T06:11:25.950Z,28.2305,84.7314,8.22,7.8,mww,"67 km NNE of Bharatpur, Nepal",us20002926
+2015-04-25T06:15:22.910Z,27.6285,85.5398,10,6.1,mb,"0 km NNW of Dhulikhel, Nepal",us20002bi4
+2015-04-25T06:18:10.870Z,27.6857,86.0213,10,5.6,mb,"31 km SSE of Kodari, Nepal",us20002bi0
+2015-04-25T06:20:40.340Z,28.2046,84.492,10,5.4,mb,"Nepal",us20002bi6
+2015-04-25T06:22:02.750Z,27.8006,85.1141,10,5.1,mb,"21 km NW of Kirtipur, Nepal",us20002bhs
+2015-04-25T06:22:23.350Z,27.813,85.448,18,5.26,mw,"12 km NNW of Nagarkot, Nepal",iscgem607260025
+2015-04-25T06:25:55.260Z,27.687,85.5854,10,5,mb,"7 km ESE of Nagarkot, Nepal",us20002bfk
+2015-04-25T06:37:58.690Z,27.7435,85.8302,10,5.1,mb,"27 km SSW of Kodari, Nepal",us2000292w
+2015-04-25T06:45:21.320Z,28.2244,84.8216,10,6.6,mww,"71 km NNE of Bharatpur, Nepal",us2000292y
+2015-04-25T06:53:42.750Z,27.672,85.2009,10,5,mb,"7 km W of Kirtipur, Nepal",us20002bf3
+2015-04-25T06:56:33.860Z,27.8822,85.7505,10,5.5,mb,"22 km WSW of Kodari, Nepal",us20002934
+2015-04-25T06:58:27.570Z,27.7219,86.0061,10,5.1,mb,"26 km S of Kodari, Nepal",us20002bfz
+2015-04-25T07:47:01.480Z,27.8172,85.5955,10,5,mb,"13 km NNE of Nagarkot, Nepal",us2000293p
+2015-04-25T08:29:24.560Z,27.9351,84.6218,10,5,mb,"33 km NNE of Bharatpur, Nepal",us20002946
+2015-04-25T08:55:55.960Z,27.5866,85.5058,10,5.3,mb,"0 km WNW of Panauti, Nepal",us2000294d
+2015-04-25T09:17:02.310Z,28.3902,87.3173,10,5.7,mb,"69 km NE of Lobujya, Nepal",us2000294g
+2015-04-25T12:44:05.170Z,28.0979,84.5594,10,5.2,mb,"48 km NNE of Bharatpur, Nepal",us2000295i
+2015-04-25T17:42:50.910Z,28.238,85.829,10,5.1,mwr,"33 km NNW of Kodari, Nepal",us2000297g
+2015-04-25T23:16:15.450Z,27.7993,84.8715,13.61,5.1,mww,"42 km WNW of Kirtipur, Nepal",us2000299v
+2015-04-26T07:09:10.670Z,27.7711,86.0173,22.91,6.7,mww,"21 km SSE of Kodari, Nepal",us200029bt
+2015-04-26T16:26:06.730Z,27.8297,85.865,14,5,mwb,"17 km SSW of Kodari, Nepal",us200029ea
+2015-04-27T12:35:53.930Z,26.8644,88.055,31.71,5.1,mb,"13 km ESE of Ilam, Nepal",us200029k7
+2015-05-12T07:05:19.730Z,27.8087,86.0655,15,7.3,mww,"Nepal",us20002ejl
+2015-05-12T07:17:20.640Z,27.7141,86.2177,13.01,5.5,mb,"37 km SE of Kodari, Nepal",us20002ek0
+2015-05-12T07:23:32.670Z,27.5589,86.2566,10,5,mb,"52 km WSW of Namche Bazar, Nepal",us10002bgy
+2015-05-12T07:34:22.630Z,27.7458,86.2449,10,5.4,mb,"37 km SE of Kodari, Nepal",us20002ek3
+2015-05-12T07:36:54.490Z,27.625,86.1617,15,6.3,mww,"42 km SSE of Kodari, Nepal",us20002ek5
+2015-05-12T08:06:05.530Z,27.7221,86.0161,15,5,mb,"27 km SSE of Kodari, Nepal",us20002ekk
+2015-05-12T08:13:54.600Z,27.7629,85.7574,15,5.1,mb,"23 km ENE of Nagarkot, Nepal",us20002ekq
+2015-05-12T08:21:10.760Z,27.7298,86.1316,15,5.2,mb,"30 km SE of Kodari, Nepal",us20002ekr
+2015-05-12T21:25:11.930Z,27.783,84.6384,10,5.2,mb,"23 km ENE of Bharatpur, Nepal",us20002etn
+2015-05-13T21:38:06.390Z,27.7199,86.0503,8.38,5,mb,"28 km SSE of Kodari, Nepal",us100028tz
+2015-05-16T11:34:09.980Z,27.5603,86.0734,7,5.5,mww,"45 km SSE of Kodari, Nepal",us100029rn
+2015-08-23T09:02:05.080Z,27.8355,86.0795,10,5,mb,"18 km SE of Kodari, Nepal",us100034be
+2015-11-19T04:15:52.600Z,27.8525,85.6776,16.51,5,mb,"21 km NE of Nagarkot, Nepal",us10003zfw
+2015-12-18T22:16:56.550Z,29.3985,81.6541,10,5.4,mb,"53 km WNW of Jumla, Nepal",us1000488j
+2016-02-05T16:20:11.740Z,27.8782,85.3377,23.53,5.2,mb,"19 km N of Kathmandu, Nepal",us20004y4t
+2016-02-21T18:10:00.970Z,27.9633,84.6943,16.72,5.1,mb,"40 km NE of Bharatpur, Nepal",us10004rjm
+2016-05-22T01:48:48.130Z,28.4538,87.5326,9.36,5.4,mwc,"89 km NE of Lobujya, Nepal",us10005j6b
+2016-05-22T02:05:54.680Z,28.5654,87.4796,4.44,5.1,mb,"94 km NE of Lobujya, Nepal",us10005j6d
+2016-11-27T23:35:21.020Z,27.8015,86.5319,10,5.4,mb,"17 km W of Namche Bazar, Nepal",us10007cuh
+2016-12-01T16:52:50.110Z,29.979,80.6321,31.96,5.2,mb,"18 km NE of Dharchula, India",us10007e1x
+2017-02-01T10:07:44.180Z,30.6877,83.3674,10,5.1,mb,"193 km NE of Jumla, Nepal",us10007wlj
+2017-02-06T17:03:06.530Z,30.6544,79.1645,16.05,5.1,mwb,"36 km NW of Pipalkoti, India",us20008hyg
+2017-12-06T15:19:49.970Z,30.6339,79.1601,10,5.1,mb,"34 km NW of Pipalkoti, India",us1000bmru
+2017-12-08T02:51:18.860Z,27.7618,86.1471,10,5,mb,"28 km SE of Kodari, Nepal",us2000c1xk
+2018-08-01T15:46:23.750Z,30.3493,87.6027,10,5.2,mww,"173 km NW of Rikaze, China",us2000gj0i
+2018-10-31T23:09:01.530Z,30.2891,87.4647,10,5,mb,"179 km NW of Rikaze, China",us2000i4zp
+2018-12-23T19:32:22.060Z,30.4079,87.62,10,5.8,mww,"177 km NW of Rikaze, China",us2000iws8
+2018-12-23T19:35:20.200Z,30.4684,86.7946,10,5,mb,"197 km NE of Saga, China",us2000j2xb
+2019-01-20T14:28:30.290Z,30.3908,87.6229,9.85,5.2,mb,"175 km NW of Rikaze, China",us2000j6mf
+2019-11-19T13:30:55.900Z,29.3228,81.1433,10,5,mww,"20 km ENE of Dipayal, Nepal",us700069vd
+2020-03-20T01:33:15.443Z,28.5896,87.3081,10,5.7,mww,"85 km NE of Lobujya, Nepal",us70008cld
+2020-09-15T23:34:03.386Z,27.8464,85.8765,10,5.3,mb,"14 km SSW of Kodari, Nepal",us7000bnsh
+2021-02-02T02:31:13.845Z,28.8225,87.362,8.7,5,mww,"110 km NNE of Lobujya, Nepal",us6000ddsr
+2021-02-04T05:06:23.654Z,28.7463,87.3785,10,5.1,mb,"104 km NNE of Lobujya, Nepal",us6000decu
+2021-04-05T15:19:57.976Z,27.1863,88.9412,10,5.2,mb,"35 km NNW of Samtse, Bhutan",us6000dz5d
+2021-05-18T23:57:58.646Z,28.2785,84.3373,10,5.3,mb,"36 km E of Pokhara, Nepal",us7000e4aq
+2021-11-05T01:48:32.008Z,28.8267,87.4455,10,5,mb,"115 km NNE of Lobujya, Nepal",us7000frkq
+2022-07-31T02:28:08.777Z,27.1316,86.7827,10,5.1,mb,"26 km W of Bhojpur, Nepal",us6000i6vr
+2022-11-08T20:27:22.316Z,29.2917,81.1593,11,5.7,mww,"Nepal",us7000incn
+2022-11-12T14:27:05.131Z,29.3523,81.1777,10,5.2,mww,"25 km ENE of Dipayal, Nepal",us7000ipbc
+2023-01-24T08:58:33.123Z,29.5825,81.6638,33.11,5.4,mww,"60 km NW of Jumla, Nepal",us6000jivm
+2023-04-27T19:45:53.627Z,29.6212,81.5483,10,5.1,mb,"72 km NE of Dipayal, Nepal",us7000jwdq
+2023-10-03T09:21:03.018Z,29.4973,81.242,13,5.7,mww,"39 km NE of Dipayal, Nepal",us6000lcgj
+2023-10-07T06:00:01.972Z,29.5133,81.2055,10,5,mb,"38 km NE of Dipayal, Nepal",us6000ldp9
+2023-10-22T01:54:21.100Z,27.8879,84.7252,25.706,5.2,mb,"36 km NE of Bharatpur, Nepal",us6000lh8c
+2023-11-03T18:02:53.465Z,28.858,82.1531,12,5.7,mww,"43 km E of Dailekh, Nepal",us7000l8p5
+2023-11-06T10:46:39.805Z,28.8564,82.0652,10,5.3,mb,"34 km E of Dailekh, Nepal",us7000l94m
+2024-12-20T22:29:02.221Z,29.4923,81.6099,10,5,mb,"60 km WNW of Jumla, Nepal",us7000p0hw
+2025-01-07T01:05:16.734Z,28.6036,87.3781,10,7.1,mww,"2025 Southern Tibetan Plateau Earthquake",us6000pi9w
+2025-01-07T01:09:13.529Z,28.7537,87.1968,10,5.4,mb,"96 km NNE of Lobuche, Nepal",us6000pks1
+2025-01-07T01:10:54.880Z,28.8057,87.1343,10,5.2,mb,"100 km NNE of Lobuche, Nepal",us6000pks6
+2025-01-07T01:13:27.197Z,28.4421,87.4659,10,5.2,mb,"Southern Tibetan Plateau",us6000pia7
+2025-01-07T01:14:42.239Z,28.5282,87.356,10,5.2,mb,"83 km NE of Lobuche, Nepal",us6000pkpp
+2025-01-07T01:24:25.911Z,28.4845,87.4575,10,5,mb,"Southern Tibetan Plateau",us6000piak
+2025-01-07T01:37:13.647Z,28.7969,87.2321,10,5,mb,"Southern Tibetan Plateau",us6000piar
+2025-01-08T03:51:21.676Z,28.4359,87.3648,10,5,mb,"Southern Tibetan Plateau",us6000piij
+2025-01-13T12:57:37.995Z,28.405,87.3079,10,5,mb,"Southern Tibetan Plateau",us6000pjp9
+2025-01-13T12:58:22.257Z,28.4815,87.4058,10,5.1,mb,"Southern Tibetan Plateau",us6000pjpb
+2025-01-20T21:03:11.864Z,28.3855,87.5651,10,5,mb,"Southern Tibetan Plateau",us6000plbf
+2025-02-27T21:06:10.378Z,27.8626,85.9232,10,5,mww,"11 km SSW of Kodari, Nepal",us6000pvwf
+2025-03-08T08:50:17.952Z,28.5719,87.5508,10,5,mww,"100 km NE of Lobuche, Nepal",us6000pxlv
+2025-05-11T21:11:22.060Z,29.0536,87.6068,9,5.5,mww,"126 km W of Rikaze, China",us7000pyq7
+2025-09-12T21:42:10.839Z,29.1796,87.0157,10,5,mb,"137 km N of Lobuche, Nepal",us7000qvtp
+2026-08-26T02:52:10.000Z,28.271,85.515,0,5.2,ms_vx,"55 km NW of Kodari, Nepal",us7000tbwb
+2026-09-03T08:16:36.404Z,31.3933,80.3486,10,5.1,mb,"119 km NE of Joshimath, India",us7000tdv4
