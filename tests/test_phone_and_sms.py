@@ -70,6 +70,22 @@ def test_api_body_validation():
             from_api(bad, event_id="e", received_at=1, checkin_id="r")
 
 
+@pytest.mark.parametrize("extra", [
+    {"note": 123}, {"note": ["help"]}, {"district": 7}, {"district": {"name": "Gorkha"}},
+    {"contacts": 5}, {"contacts": {"a": "9851111111"}}, {"contacts": None},
+])
+def test_wrongly_typed_optional_fields_are_ignored_not_fatal(extra):
+    c = from_api({"phone": "9841234567", "status": "need_help", **extra},
+                 event_id="e", received_at=1, checkin_id="r")
+    assert c.status == "need_help" and c.note == "" and c.district is None and c.contacts == []
+
+
+def test_contacts_as_one_comma_separated_string():
+    c = from_api({"phone": "9841234567", "status": "safe", "contacts": "9851111111, ९८६१११११११,,"},
+                 event_id="e", received_at=1, checkin_id="r")
+    assert c.contacts == ["+9779851111111", "+9779861111111"]
+
+
 def test_note_is_normalised_and_cut_by_characters_not_bytes():
     # NA + NUKTA typed as two code points composes to NNNA under NFC, so the same word typed on two
     # keyboards compares equal. (KA + NUKTA does not: U+0958 is a composition exclusion.)

@@ -159,7 +159,7 @@ make backtest    # activation rule over 88 real quakes since 2015 (artifacts/rep
 make simulate    # the surge table and charts above (~90 s)
 make cost        # idle and event cost model
 make serve       # web page + API on http://localhost:8000 (try /docs)
-make test        # 63 tests, including every Lambda handler against mocked AWS (moto)
+make test        # 72 tests, including every Lambda handler against mocked AWS (moto)
 ```
 
 **On AWS:** [infra/README.md](infra/README.md): a WAF stack in us-east-1, the primary in ap-south-1 (Mumbai, the closest region to Nepal), and a standby in ap-southeast-1 (Singapore). I haven't left it deployed: an idle stack is cheap, but SMS isn't, and a public check-in page for an event that hasn't happened shouldn't exist outside a drill.
@@ -182,7 +182,7 @@ surakshit/
 web/index.html    the 12 KB offline-first page, Nepali and English
 infra/            SAM template (two regions), WAF template, deploy guide
 data/             USGS catalogue of M5+ quakes near Nepal, 2015-2026
-tests/            63 tests: phone parsing, SMS, writer semantics, activation, handlers on moto, simulator
+tests/            72 tests: phone parsing, SMS, writer semantics, activation, handlers on moto, simulator
 docs/             the engineering documents above
 ```
 

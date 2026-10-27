@@ -70,6 +70,14 @@ def test_invalid_messages_are_dropped_not_retried():
     assert res.outcomes["invalid"] == 3 and res.failed_ids == []
 
 
+def test_wrongly_typed_optional_fields_are_stored_not_retried_to_the_dlq():
+    s = LocalStore()
+    res = run(s, web({"phone": "9841234567", "status": "injured", "note": 5, "district": 7,
+                      "contacts": {"a": 1}}, T0, "r1"))
+    assert res.failed_ids == [] and res.outcomes["written"] == 1
+    assert item(s)["status"] == "injured"
+
+
 def test_throttled_messages_are_returned_for_retry_and_only_those():
     class Flaky(LocalStore):
         def put_checkin(self, it):
