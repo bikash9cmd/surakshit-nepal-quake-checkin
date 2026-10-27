@@ -38,7 +38,7 @@ class InvalidCheckIn(ValueError):
 
 
 def district_from(text: str | None) -> str | None:
-    if not text:
+    if not text or not isinstance(text, str):
         return None
     key = re.sub(r"[\s\-_]", "", text.strip().lower())
     return _DISTRICT_ALIASES.get(key) or _DISTRICT_LOOKUP.get(key)
@@ -47,7 +47,7 @@ def district_from(text: str | None) -> str | None:
 def clean_note(text: str | None) -> str:
     """NFC-normalise (so the same Nepali word typed on two keyboards compares equal), strip
     control characters, and cut to MAX_NOTE_CHARS *characters*, not bytes."""
-    if not text:
+    if not text or not isinstance(text, str):
         return ""
     text = unicodedata.normalize("NFC", text)
     # Whitespace first, then strip controls. The other way round, "HELP\ngorkha" (an SMS typed on
@@ -87,7 +87,7 @@ def from_api(body: dict, *, event_id: str, received_at: int, checkin_id: str) ->
     if status not in config.STATUSES:
         raise InvalidCheckIn(f"status must be one of {config.STATUSES}")
     contacts = []
-    for raw in (body.get("contacts") or [])[: config.MAX_CONTACTS]:
+    for raw in _contact_list(body.get("contacts"))[: config.MAX_CONTACTS]:
         try:
             c = normalise(str(raw))
         except InvalidPhone:
@@ -100,6 +100,16 @@ def from_api(body: dict, *, event_id: str, received_at: int, checkin_id: str) ->
         note=clean_note(body.get("note")), contacts=contacts,
         lang="ne" if body.get("lang") == "ne" else "en",
     )
+
+
+def _contact_list(value) -> list:
+    """The contacts field as a list. The page sends a list; a hand-written client may send the
+    comma-separated text of the input field instead. Any other type is ignored, not an error:
+    a bad optional field must not lose the person's own check-in, and an exception other than
+    InvalidCheckIn would make the writer retry the message all the way to the DLQ."""
+    if isinstance(value, str):
+        return [p for p in value.split(",") if p.strip()]
+    return value if isinstance(value, list) else []
 
 
 # ---------- SMS ----------
