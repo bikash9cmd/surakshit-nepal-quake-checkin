@@ -120,4 +120,3 @@ with tab_sum:
         c.metric(k.replace("_", " "), f"{v:,}")
     st.subheader("By district")
     st.dataframe(pd.DataFrame(s["by_district"]).T.fillna(0).astype(int), width="stretch")
-    st.caption("Writer outcomes so far: " + ", ".join(f"{k} {v:,}" for k, v in system.outcomes.items()))
