@@ -13,11 +13,12 @@ from datetime import UTC, datetime
 import pandas as pd
 import streamlit as st
 
+import brand
 from surakshit import activation, reads
 from surakshit.__main__ import _catalog
 from surakshit.local import LocalSystem
 
-st.set_page_config(page_title="Surakshit", page_icon="🫶", layout="centered")
+brand.page("surakshit")
 
 DISTRICTS = ["Kathmandu", "Lalitpur", "Bhaktapur", "Gorkha", "Sindhupalchok", "Nuwakot", "Dhading", "Rasuwa", "Kavre"]
 STATUS = {"safe": "I'm safe", "need_help": "I need help", "injured": "I'm injured"}
@@ -60,8 +61,6 @@ def clock() -> str:
     return datetime.fromtimestamp((demo["t0"] + demo["minutes"] * 60_000) / 1000, UTC).strftime("%d %b %Y %H:%M UTC")
 
 
-st.title("Surakshit (सुरक्षित)")
-st.caption('"I\'m safe" check-ins for the next big earthquake in Nepal, from a tiny web page or a plain SMS.')
 st.info(
     f"Replaying **M{event['mag']} {event['place']}** (25 April 2015). Demo clock: {clock()}. "
     "2,000 synthetic people have already checked in. Phone numbers here are made up."
@@ -75,7 +74,7 @@ with tab_web:
         status = st.radio("How are you?", list(STATUS), format_func=STATUS.get, horizontal=True)
         district = st.selectbox("District", DISTRICTS)
         family = st.text_input("Family number to tell (optional)", "9841000001")
-        if st.form_submit_button("Check in"):
+        if st.form_submit_button("Check in", type="primary"):
             body = {"phone": phone, "status": status, "district": district, "lang": "en"}
             if family.strip():
                 body["contacts"] = [family.strip()]
@@ -96,7 +95,7 @@ with tab_sms:
     ]
     text = st.selectbox("Message", examples, index=0, accept_new_options=True)
     sender = st.text_input("From", "+9779851000003")
-    if st.button("Send SMS"):
+    if st.button("Send SMS", type="primary"):
         before = len(system.outbox)
         system.submit_sms(sender, text, received_at=stamp())
         system.drain()
@@ -108,7 +107,7 @@ with tab_sms:
 
 with tab_look:
     q = st.text_input("Number to look up", "9851000002")
-    if st.button("Look up"):
+    if st.button("Look up", type="primary"):
         code, body = reads.status_view(system.store, system.pepper, q)
         st.json(body)
 
@@ -120,3 +119,5 @@ with tab_sum:
         c.metric(k.replace("_", " "), f"{v:,}")
     st.subheader("By district")
     st.dataframe(pd.DataFrame(s["by_district"]).T.fillna(0).astype(int), width="stretch")
+
+brand.footer()
