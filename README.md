@@ -1,5 +1,7 @@
 # Surakshit (सुरक्षित): "I'm safe" check-ins for the next big earthquake in Nepal
 
+[![Try it live](https://img.shields.io/badge/Try_it-live-2ea44f?style=for-the-badge)](https://surakshit-nepal-quake-checkin.onrender.com)
+
 Surakshit lets people in Nepal tell their family they are safe, need help or are injured in the hours after an earthquake, from a 12 KB web page or a plain SMS, and lets anyone look a number up. It opens itself when USGS reports a quake people in Nepal will have felt, sits idle the rest of the time for **about $12 a month**, and is designed for the one thing that matters: **not losing a check-in when millions of people try in the same ten minutes.**
 
 ```text
@@ -147,6 +149,16 @@ The activator opens an event when a quake is close enough, shallow enough and st
 | Performance efficiency | No compute in the write path's accept step; pre-warmed table; 100-message batches; reads served from the CDN for 30-60 s; counters folded per batch so one busy district can't make a hot key |
 | Cost optimisation | ~$12/month idle; SMS budget breaker; reply in one language (Nepali SMS cost 2-3x more segments); metrics emitted only when non-zero; Graviton Lambdas |
 | Sustainability | Nothing runs while nothing is happening, which is almost always |
+
+## Try it live
+
+**[https://surakshit-nepal-quake-checkin.onrender.com](https://surakshit-nepal-quake-checkin.onrender.com)**
+
+Replayed on 25 April 2015: check in as safe or needing help, send a Nepali or English SMS and read the replies, look a number up, and watch the event summary update.
+
+It runs on a free server that sleeps when nobody is using it, so the first visit can take a minute to wake up. Everything runs offline: no API keys, no cloud account.
+
+To run the same page locally: `pip install -r requirements-app.txt` and then `streamlit run app.py`.
 
 ## Run it
 
